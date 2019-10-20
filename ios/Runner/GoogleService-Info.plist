@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>139765027095-6rdpocegllpit609volq42rmvlpmqu2i.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.139765027095-6rdpocegllpit609volq42rmvlpmqu2i</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCfuuuLBHkm6tKK-GV_X7hUpAdJkeSgSD8</string>
+	<key>GCM_SENDER_ID</key>
+	<string>139765027095</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>xom.ricardoapp.memender</string>
+	<key>PROJECT_ID</key>
+	<string>memender-47f82</string>
+	<key>STORAGE_BUCKET</key>
+	<string>memender-47f82.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:139765027095:ios:0efb7403761467fef62752</string>
+	<key>DATABASE_URL</key>
+	<string>https://memender-47f82.firebaseio.com</string>
+</dict>
+</plist>
