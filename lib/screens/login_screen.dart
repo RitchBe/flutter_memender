@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:memender/services/sign_in.dart';
 
-import 'main_screen.dart';
+import 'home.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -73,7 +73,7 @@ Widget _signInButtonGoogle() {
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) {
-            return MainScreen();
+            return Home();
           },
         ),
       );
