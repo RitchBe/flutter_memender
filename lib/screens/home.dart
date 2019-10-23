@@ -1,4 +1,8 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:memender/components/nestedTabBarView.dart';
 import 'package:memender/screens/top_screen.dart';
 import '../constants.dart';
 import '../components/custom_app_bar.dart';
@@ -8,6 +12,10 @@ import '../components/main_drawer.dart';
 import 'profile.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:uuid/uuid.dart';
+import 'package:flushbar/flushbar.dart';
+import '../components/nestedTabBarView.dart';
 
 class Home extends StatefulWidget {
 
@@ -19,6 +27,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   int _selectedIndex = 0;
   String url = '';
+  File _image;
 
 
 
@@ -26,7 +35,7 @@ class _HomeState extends State<Home> {
 
   static List<Widget> _widgetOptions = <Widget>[
     CardSwiper(),
-    Profile(),
+    NestedTabBar(),
     TopScreen(),
   ];
 
@@ -36,12 +45,40 @@ class _HomeState extends State<Home> {
     });
   }
 
-  void getMemes() async {
-    final ref = FirebaseStorage.instance.ref().child('images/meme-1.jpg');
-    var url = Uri.parse(await ref.getDownloadURL());
+  // void getMemes() async {
+  //   final ref = FirebaseStorage.instance.ref().child('images/meme-1.jpg');
+  //   var url = Uri.parse(await ref.getDownloadURL());
+  //   setState(() {
+  //     url = url;
+  //   });
+  // }
+
+  Future getImage() async {
+    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+    var uuid = new Uuid();
     setState(() {
-      url = url;
+      _image = image;
+      print(_image);
     });
+    final StorageReference storageReference = FirebaseStorage.instance.ref().child('images/').child('${uuid.v1()}');
+    final StorageUploadTask uploadTask = storageReference.putFile(_image);
+    final StreamSubscription<StorageTaskEvent> streamSubscription = uploadTask.events.listen((event) {
+      print('EVENT ${event.type}');
+    });
+
+    await uploadTask.onComplete;
+    streamSubscription.cancel();
+
+      Flushbar(
+      title:  "Your meme was send to the stratosphere 🚀",
+      message:  "..better be funny or it will get destroy 💣 ",
+      duration:  Duration(seconds: 4),  
+      backgroundGradient: LinearGradient(
+        colors: [Color(0xFFFF6996), Color(0xFF524A87)]
+        )          
+    )..show(context);
+
+
   }
 
 
@@ -72,11 +109,15 @@ class _HomeState extends State<Home> {
             ),
           ]),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: Container(
+      floatingActionButton: FlatButton(
         child: Image.asset(
           'assets/addMeme.png',
           height: 80.0,
         ),
+        onPressed: (){
+          getImage();
+
+        },
       ),
       drawer: MainDrawer(),
       drawerScrimColor: Color(0x00),

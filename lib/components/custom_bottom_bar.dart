@@ -5,6 +5,7 @@ import '../constants.dart';
 import '../screens/home.dart';
 import '../screens/profile.dart';
 import 'large_cards.dart';
+import 'nestedTabBarView.dart';
 
 class CustomBottomBar extends StatefulWidget {
   @override
@@ -16,7 +17,7 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
 
   static List<Widget> _widgetOptions = <Widget>[
     CardSwiper(),
-    Profile(),
+    NestedTabBar(),
   ];
 
   void _onItemTapped(int index) {

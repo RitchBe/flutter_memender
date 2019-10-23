@@ -32,7 +32,9 @@ dependencies:
   flutter_tindercard: ^0.1.7
   http: ^0.12.0
   flutter_svg: ^0.14.1
-  image_picker: ^0.6.1+8
+  image_picker: 0.4.6
+  uuid: 2.0.1
+  flushbar: ^1.9.1
 
 
 dev_dependencies:

@@ -60,7 +60,7 @@ class MainDrawer extends StatelessWidget {
                   RawMaterialButton(
                     onPressed: () {
                       print('mofo');
-                      Navigator.popAndPushNamed(context, '/top', arguments: 'all-time');
+                      Navigator.popAndPushNamed(context, '/top', arguments: {'order': 'All time favorites'});
                     },
                     child: Padding(
                       padding: EdgeInsets.only(left: 15.0),
@@ -83,7 +83,7 @@ class MainDrawer extends StatelessWidget {
                 children: <Widget>[
                   RawMaterialButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, '/top', arguments: 'monthly');
+                      Navigator.pushNamed(context, '/top', arguments: {'order': 'Monthly favorites'});
                     },
                     child: Padding(
                       padding: EdgeInsets.only(left: 15.0),
@@ -106,7 +106,7 @@ class MainDrawer extends StatelessWidget {
                 children: <Widget>[
                   RawMaterialButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, '/top', arguments: 'weelky');
+                      Navigator.pushNamed(context, '/top', arguments: {'order': 'Weekly favorites'});
                     },
                     child: Padding(
                       padding: EdgeInsets.only(left: 15.0),
