@@ -35,6 +35,9 @@ dependencies:
   image_picker: 0.4.6
   uuid: 2.0.1
   flushbar: ^1.9.1
+  share: ^0.5.3
+
+
 
 
 dev_dependencies:
