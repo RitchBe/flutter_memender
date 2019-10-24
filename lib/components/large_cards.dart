@@ -5,6 +5,9 @@ import 'package:flutter_tindercard/flutter_tindercard.dart';
 import 'package:memender/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:share/share.dart';
+
+
 import 'dart:async';
 import 'dart:math';
 
@@ -216,6 +219,20 @@ class _CardSwiperState extends State<CardSwiper> with TickerProviderStateMixin {
                           ),
                           onPressed: () {
                             controller.triggerRight();
+                          },
+                        ),
+                        RawMaterialButton(
+                          child: Row(
+                            children: <Widget>[
+                              Icon(
+                                Icons.share,
+                                color: Colors.pink,
+                              ),
+                              
+                            ],
+                          ),
+                          onPressed: () {
+                            Share.share("Here goes the share url");
                           },
                         )
                       ],
