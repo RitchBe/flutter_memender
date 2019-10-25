@@ -36,8 +36,7 @@ dependencies:
   uuid: 2.0.1
   flushbar: ^1.9.1
   share: ^0.5.3
-
-
+  image_downloader: ^0.19.1
 
 
 dev_dependencies:
