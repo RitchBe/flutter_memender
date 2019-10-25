@@ -11,6 +11,7 @@ import 'package:share/share.dart';
 
 
 
+
 class CardSwiper extends StatefulWidget {
   @override
   _CardSwiperState createState() => _CardSwiperState();
@@ -55,6 +56,9 @@ class _CardSwiperState extends State<CardSwiper> {
     }
   }
 
+  saveMeme(url) async {
+  }
+
   @override
   Widget build(BuildContext context) {
     CardController controller;
@@ -85,9 +89,14 @@ class _CardSwiperState extends State<CardSwiper> {
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: <Widget>[
                                 RawMaterialButton(
+                                  onPressed: () {
+                                    print('you my frind will be saved');
+                                    saveMeme(snapshot.data.documents[index]['url']);
+                                  },
                                   child: Icon(
                                     Icons.bookmark_border,
                                     color: kHighlightColor,
+                                    
                                   ),
                                 ),
                               ],
