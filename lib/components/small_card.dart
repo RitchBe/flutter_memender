@@ -23,21 +23,21 @@ class _SmallCardListState extends State<SmallCardList> {
 
   void initState() {
     super.initState();
-    getMemeImage();
+    // getMemeImage();
   }
 
-  Future<String> getMemeImage() async {
-    print('~~~~~~~~~~~~~~~~~~~~~~~~wave~~~~~~~~~~~~~~~~~');
-    print(widget.document['dateCreation']);
-    StorageReference ref = widget.storage.ref().child(widget.document['name']);
-    var imageUrl = await ref.getDownloadURL();
+  // Future<String> getMemeImage() async {
+  //   print('~~~~~~~~~~~~~~~~~~~~~~~~wave~~~~~~~~~~~~~~~~~');
+  //   print(widget.document['dateCreation']);
+  //   StorageReference ref = widget.storage.ref().child(widget.document['name']);
+  //   var imageUrl = await ref.getDownloadURL();
 
-    setState(() {
-      url = imageUrl.toString();
-    });
-    print('you will do it');
-    print(url);
-  }
+  //   setState(() {
+  //     url = imageUrl.toString();
+  //   });
+  //   print('you will do it');
+  //   print(url);
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -65,11 +65,12 @@ class _SmallCardListState extends State<SmallCardList> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Expanded(
-                    child: url == null
-                        ? Text('Loading')
-                        : Container(
+                    // child: url == null
+                    //     ? Text('Loading')
+                    //     : 
+                    child: Container(
                             child: Image.network(
-                              url,
+                              widget.document['url'],
                               scale: 2.0,
                             ),
                           ),
