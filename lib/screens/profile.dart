@@ -55,12 +55,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
             stream: Firestore.instance
                 .collection('memes')
                 .where('userId', isEqualTo: userRef)
-                .limit(100)
                 .snapshots(),
             builder: (context, snapshot) {
               if (!snapshot.hasData)
                 return const Center(
-                  child: Text('Loading'),
+                  child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFCFB4F1))),
                 );
               return ListView.builder(
                 shrinkWrap: true,
@@ -80,7 +79,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
             width: MediaQuery.of(context).size.width * 1,
-            height: MediaQuery.of(context).size.height * 0.15,
+            height: MediaQuery.of(context).size.height * 0.05,
           ),
         )
       ],

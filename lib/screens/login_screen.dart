@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:memender/services/sign_in.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'home.dart';
 
@@ -11,6 +12,14 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   String _email, _password;
+
+  // _launchURL(url) async {
+  //   if (await canLaunch(url)) {
+  //     await launch(url);
+  //   } else {
+  //     throw 'Could not launch $url';
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -58,6 +67,16 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
 
                 _signInButtonGoogle(),
+
+                Row(children: <Widget>[
+                  Text("By loging in you accept the"),
+                  RawMaterialButton(
+                    child: Text('Privacy Policy'),
+     
+                    // _launchURL('https://www.websitepolicies.com/policies/view/3yAkwiZZ') 
+                    )
+                ],)
+
               ],
             ),
           ),

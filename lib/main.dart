@@ -3,6 +3,7 @@ import 'package:memender/screens/profile.dart';
 import 'package:memender/screens/top_screen.dart';
 import 'screens/login_screen.dart';
 import 'screens/home.dart';
+import 'screens/info.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 void main() {
@@ -12,6 +13,7 @@ void main() {
       '/': (BuildContext context) => _handleWindowDisplay(),
       '/profile': (BuildContext context) => Profile(),
       '/top': (BuildContext context) => TopScreen(),
+      '/info': (BuildContext context) => Info(),
 
     }
   ));
@@ -23,7 +25,7 @@ Widget _handleWindowDisplay() {
     stream: FirebaseAuth.instance.onAuthStateChanged,
     builder: (BuildContext context, snapshot) {
       if (snapshot.connectionState == ConnectionState.waiting) {
-        return Center(child: Text("Loading"));
+        return Center(child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFCFB4F1))));
       } else {
         if (snapshot.hasData) {
           return Home();
