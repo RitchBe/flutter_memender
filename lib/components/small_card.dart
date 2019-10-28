@@ -2,9 +2,7 @@ import '../constants.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
-
-
+import 'package:flushbar/flushbar.dart';
 
 class SmallCardList extends StatefulWidget {
   BuildContext context;
@@ -39,6 +37,22 @@ class _SmallCardListState extends State<SmallCardList> {
   //   print(url);
   // }
 
+  deleteMeme(document) async {
+   await Firestore.instance.collection('memes').document(document['memeId']).delete();
+   await widget.storage.ref().child('images/' + document['memeId'] ).delete();
+
+      Flushbar(
+        flushbarPosition: FlushbarPosition.TOP,
+        title: "Meme deleted 😿",
+        message: "..little bird gone too early 🐤 ",
+        duration: Duration(seconds: 4),
+        backgroundGradient:
+            LinearGradient(colors: [Color(0xFFFF6996), Color(0xFF524A87)]))
+      ..show(context);
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -64,23 +78,57 @@ class _SmallCardListState extends State<SmallCardList> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
+                  widget.method == 'uploaded' 
+                      ? Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: <Widget>[
+                            RawMaterialButton(
+                              onPressed: () {
+                                deleteMeme(widget.document);
+                              },
+                              child: Icon(
+                                Icons.delete_sweep,
+                                color: kHighlightColor,),
+                            )
+                          ],
+                        )
+                      : SizedBox() ,
                   Expanded(
                     // child: url == null
-                    //     ? Text('Loading')
-                    //     : 
+                    //     ? CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFCFB4F1)))
+                    //     :
                     child: Container(
-                            child: Image.network(
-                              widget.document['url'],
-                              scale: 2.0,
-                            ),
-                          ),
+                      child: Image.network(
+                        widget.document['url'],
+                        scale: 2.0,
+                      ),
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(right: 38.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: <Widget>[
+
                         Row(
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.only(top: 8.0, right: 8.0),
+                              child: Icon(
+                                Icons.thumb_down,
+                                color: kBlue,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(right: 20.0),
+                              child: Text('${widget.document['downvote']}',
+                                  style: TextStyle(
+                                      color: kHighlightColor,
+                                      fontFamily: 'Lato')),
+                            ),
+                          ],
+                        ),
+                                                Row(
                           children: <Widget>[
                             Icon(
                               Icons.favorite,
@@ -88,26 +136,8 @@ class _SmallCardListState extends State<SmallCardList> {
                             ),
                             Padding(
                               padding:
-                                  const EdgeInsets.only(left: 8.0, right: 50.0),
+                                  const EdgeInsets.only(left: 8.0),
                               child: Text('${widget.document['upvote']}',
-                                  style: TextStyle(
-                                      color: kHighlightColor,
-                                      fontFamily: 'Lato')),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: <Widget>[
-                            Padding(
-                              padding: const EdgeInsets.only(top: 8.0),
-                              child: Icon(
-                                Icons.thumb_down,
-                                color: kBlue,
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text('${widget.document['downvote']}',
                                   style: TextStyle(
                                       color: kHighlightColor,
                                       fontFamily: 'Lato')),

@@ -39,8 +39,8 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
             splashColor: kOpacityColor,
             highlightColor: kOpacityColor,
             onPressed: () {
-              Scaffold.of(context).openDrawer();
-            },
+              Navigator.pushNamed(context, '/info');
+          },
             tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
           );
         }),

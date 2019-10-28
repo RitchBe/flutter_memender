@@ -81,7 +81,7 @@ class _TopListState extends State<TopList> {
             builder: (context, snapshot) {
               if (!snapshot.hasData)
                 return const Center(
-                  child: Text('Loading'),
+                  child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFCFB4F1))),
                 );
 
               if (widget.order == "Monthly favorites") {
@@ -114,7 +114,7 @@ class _TopListState extends State<TopList> {
                 shrinkWrap: true,
                 itemCount: memesSnapshot.length,
                 itemBuilder: (BuildContext context, int i) => SmallCardList(
-                    context, memesSnapshot[i], storage, 'uploaded'),
+                    context, memesSnapshot[i], storage, 'top'),
               );
             }),
         Positioned(
@@ -128,7 +128,7 @@ class _TopListState extends State<TopList> {
               ),
             ),
             width: MediaQuery.of(context).size.width * 1,
-            height: MediaQuery.of(context).size.height * 0.15,
+            height: MediaQuery.of(context).size.height * 0.05,
           ),
         )
       ],
