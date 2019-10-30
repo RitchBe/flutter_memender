@@ -43,6 +43,7 @@ class TopScreen extends StatelessWidget {
   }
 }
 
+
 class TopList extends StatefulWidget {
   final String order;
   TopList(this.order);
@@ -114,7 +115,7 @@ class _TopListState extends State<TopList> {
                 shrinkWrap: true,
                 itemCount: memesSnapshot.length,
                 itemBuilder: (BuildContext context, int i) => SmallCardList(
-                    context, memesSnapshot[i], storage, 'top'),
+                    memesSnapshot[i], storage, 'top'),
               );
             }),
         Positioned(

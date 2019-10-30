@@ -1,9 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 final GoogleSignIn googleSignIn = GoogleSignIn();
+   final FacebookLogin facebookLogin = FacebookLogin();
+
 
 String name;
 String email;
@@ -45,8 +48,60 @@ Future<String> signInWithGoogle() async {
   return 'signInWithGoogle succeeded: $user';
 }
 
+
+Future signInWithFacebook() async {
+    // var facebookLogin = FacebookLogin();
+    // var facebookLoginResult =
+    //     await facebookLogin.logIn(['email']);
+  
+
+    //  switch (facebookLoginResult.status) {
+    //   case FacebookLoginStatus.error:
+    //     print("Error");
+    //     // onLoginStatusChanged(false);
+    //     break;
+    //   case FacebookLoginStatus.cancelledByUser:
+    //     print("CancelledByUser");
+    //     // onLoginStatusChanged(false);
+    //     break;
+    //   case FacebookLoginStatus.loggedIn:
+    //     print("LoggedIn");
+    //     // onLoginStatusChanged(true);
+    //     break;
+    // }
+    FacebookLoginResult facebookLoginResult = await _handleFBSignIn();
+        final accessToken = facebookLoginResult.accessToken.token;
+        if (facebookLoginResult.status == FacebookLoginStatus.loggedIn) {
+          final facebookAuthCred =
+              FacebookAuthProvider.getCredential(accessToken: accessToken);
+          final user =
+              await _auth.signInWithCredential(facebookAuthCred);
+        
+  }
+}
+  
+    Future<FacebookLoginResult> _handleFBSignIn() async {
+    FacebookLoginResult facebookLoginResult =
+        await facebookLogin.logIn(['email']);
+    switch (facebookLoginResult.status) {
+      case FacebookLoginStatus.cancelledByUser:
+        print("Cancelled");
+        break;
+      case FacebookLoginStatus.error:
+        print("error");
+        break;
+      case FacebookLoginStatus.loggedIn:
+        print("Logged In");
+        break;
+    }
+    return facebookLoginResult;
+  }
+  
+
+
  Future<void> handleSignOut() async {
       await _auth.signOut();
   // Sign out with google
   await googleSignIn.signOut();
+  await facebookLogin.logOut();
   }
