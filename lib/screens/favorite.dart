@@ -80,7 +80,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                   shrinkWrap: true,
                   itemCount: snapshot.data.documents.length,
                   itemBuilder: (BuildContext context, int i) =>
-                      SmallCardList(context, snapshot.data.documents[i], storage, 'favorite'),
+                      SmallCardList( snapshot.data.documents[i], storage, 'favorite'),
                 );
               }),
           Positioned(

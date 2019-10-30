@@ -19,18 +19,35 @@ class CardSwiper extends StatefulWidget {
 }
 
 class _CardSwiperState extends State<CardSwiper> {
+  int hasShuffle = 0;
+  List goodDocs = [];
   Icon bookmark = Icon(
     Icons.bookmark_border,
     color: kHighlightColor,
   );
-  int testi = 0;
+  bool hasBeenShuffle = false;
+  List<DocumentSnapshot> documents = [];
   void initState() {
     super.initState();
     getUserRef();
+    testData();
   }
 
   final FirebaseAuth auth = FirebaseAuth.instance;
   String userId;
+
+  Future testData() async {
+    Firestore.instance
+    .collection('memes')
+    .snapshots()
+    .listen((data) => {
+        data.documents.shuffle(),
+        data.documents.forEach((doc) => {
+          doc['usersHasSeen'].contains(userId) ? print('') :
+          goodDocs.add(doc)
+          })
+    });
+  }
 
   getUserRef() async {
     final FirebaseUser user = await auth.currentUser();
@@ -48,6 +65,8 @@ class _CardSwiperState extends State<CardSwiper> {
   List<String> urls = [];
 
   voting(orientation, doc) async {
+    print('YOU SHOUL NOT GET ACTIVATDED');
+    print(doc['memeId']);
     String memeToVote = '';
     DocumentReference postRef = null;
     Firestore.instance
@@ -61,6 +80,7 @@ class _CardSwiperState extends State<CardSwiper> {
             });
 
     if (orientation == CardSwipeOrientation.LEFT) {
+      print('HERE FUCKER');
       Firestore.instance.runTransaction((Transaction tx) async {
         DocumentSnapshot postSnapshot = await tx.get(postRef);
         if (postSnapshot.exists) {
@@ -71,7 +91,7 @@ class _CardSwiperState extends State<CardSwiper> {
           });
         }
       });
-    } else {
+    } else if (orientation == CardSwipeOrientation.RIGHT) {
       Firestore.instance.runTransaction((Transaction tx) async {
         DocumentSnapshot postSnapshot = await tx.get(postRef);
         if (postSnapshot.exists) {
@@ -145,20 +165,32 @@ class _CardSwiperState extends State<CardSwiper> {
                 );
 
               //   snapshot.data.documents[0]['usersHasSeen'].contains('users/ypFPQsrTAEUrAT1Xih9Ob1LkC8z1') ?
-              //   snapshot.data.documents.remove(snapshot.data.documents[0])
+              //   snapshot.data.docume`nts.remove(snapshot.data.documents[0])
               //  : print('I dont'),
 
               // snapshot.data.documents.removeWhere(['usersHasSeen'].contains('users/ypFPQsrTAEUrAT1Xih9Ob1LkC8z1') == true);
+              
               // for (int i = 0; i < snapshot.data.documents.length - 1; i++) {
               //   snapshot.data.documents[i]['usersHasSeen']
               //           .contains(userId)
-              //       ? snapshot.data.documents.remove(snapshot.data.documents[i])
-              //       : print('I dont');
+              //       ? print('')
+              //       : documents.add(snapshot.data.documents[i]); 
+              // }
+              // documents.shuffle();
+              // if(hasShuffle == 0) {
+               
+             
+              //    goodDocs = documents;
+             
+              // hasShuffle++;
               // }
 
-                    final List<DocumentSnapshot> documents = snapshot.data.documents.removeWhere(['usersHasSeen'].contains('users/ypFPQsrTAEUrAT1Xih9Ob1LkC8z1') == true);
 
+  
+                    // snapshot.data.documents.removeWhere((['usersHasSeen'].contains('users/ypFPQsrTAEUrAT1Xih9Ob1LkC8z1') == true));
 
+// final documents = snapshot.data.documents.removeWhere((item) => item['usersHasSeen'].contains('users/ypFPQsrTAEUrAT1Xih9Ob1LkC8z1') == true);
+// print(documents);
 
               return Container(
                 margin: EdgeInsets.only(
@@ -166,7 +198,7 @@ class _CardSwiperState extends State<CardSwiper> {
                 child: TinderSwapCard(
                     animDuration: 800,
                     orientation: AmassOrientation.BOTTOM,
-                    totalNum: snapshot.data.documents.length,
+                    totalNum: 500,
                     stackNum: 5,
                     swipeEdge: 5,
                     maxWidth: MediaQuery.of(context).size.width * 0.9,
@@ -185,15 +217,15 @@ class _CardSwiperState extends State<CardSwiper> {
                                       onPressed: () {
                                         print('you my frind will be saved');
                                         saveMeme(
-                                            snapshot.data.documents[index]);
+                                            goodDocs[index]);
                                       },
                                       child: bookmark),
                                 ],
                               ),
                               Expanded(
-                                child: snapshot.data.documents.first != null
+                                child: goodDocs.first != null
                                     ? Image.network(
-                                        snapshot.data.documents[index]['url'])
+                                        goodDocs[index]['url'])
                                     : CircularProgressIndicator(
                                         valueColor:
                                             AlwaysStoppedAnimation<Color>(
@@ -216,10 +248,10 @@ class _CardSwiperState extends State<CardSwiper> {
                                         Padding(
                                           padding: EdgeInsets.all(8.0),
                                           child: Text(
-                                              snapshot.data.documents[index]
+                                              goodDocs[index]
                                                           ['downvote'] >
                                                       0
-                                                  ? '${((snapshot.data.documents[index]['downvote'] / snapshot.data.documents[index]['total']) * 100).round()}%'
+                                                  ? '${((goodDocs[index]['downvote'] / goodDocs[index]['total']) * 100).round()}%'
                                                   : '0%',
                                               style: TextStyle(
                                                 color: kHighlightColor,
@@ -242,7 +274,7 @@ class _CardSwiperState extends State<CardSwiper> {
                                       ],
                                     ),
                                     onPressed: () {
-                                      Share.share(snapshot.data.documents[index]
+                                      Share.share(goodDocs[index]
                                           ['url']);
                                     },
                                   ),
@@ -258,10 +290,10 @@ class _CardSwiperState extends State<CardSwiper> {
                                         Padding(
                                           padding: EdgeInsets.all(8.0),
                                           child: Text(
-                                              snapshot.data.documents[index]
+                                              goodDocs[index]
                                                           ['upvote'] >
                                                       0
-                                                  ? '${((snapshot.data.documents[index]['upvote'] / snapshot.data.documents[index]['total']) * 100).round()}%'
+                                                  ? '${((goodDocs[index]['upvote'] / goodDocs[index]['total']) * 100).round()}%'
                                                   : '0%',
                                               style: TextStyle(
                                                   color: kHighlightColor,
@@ -295,7 +327,7 @@ class _CardSwiperState extends State<CardSwiper> {
                       /// Get orientation & index of swiped card!
                       // memeCounter--;
                       // checkIfMoreMeme(index);
-                      voting(orientation, snapshot.data.documents[index]);
+                      voting(orientation, goodDocs[index]);
                     }),
               );
             }),

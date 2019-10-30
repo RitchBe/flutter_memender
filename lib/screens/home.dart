@@ -17,6 +17,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
 import 'package:flushbar/flushbar.dart';
 import '../components/nestedTabBarView.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class Home extends StatefulWidget {
 
@@ -29,9 +30,28 @@ class _HomeState extends State<Home> {
   int _selectedIndex = 0;
   String url = '';
   File _image;
+  String userId;
+  final FirebaseAuth auth = FirebaseAuth.instance;
 
 
 
+
+
+void initState() {
+  super.initState();
+  getUserRef();
+}
+
+  getUserRef() async {
+    final FirebaseUser user = await auth.currentUser();
+    final uid = user.uid;
+    DocumentReference userRef =
+        Firestore.instance.collection('users').document(uid);
+    setState(() {
+      userId = user.uid;
+    });
+    // here you write the codes to input the data into firestore
+  }
 
 
   static List<Widget> _widgetOptions = <Widget>[
@@ -54,21 +74,41 @@ class _HomeState extends State<Home> {
   //   });
   // }
 
+  Future _replaceUserId(id) async {
+     DocumentReference postRef = null;
+    print('fuclin here');
+    print(id);
+ 
+      int i = 0;
+      while (i <= 4) {
+         Firestore.instance.collection('memes').document(id).updateData({'userId': userId});
+          Future.delayed(Duration(seconds: 5));
+          i++;
+        }
+      }
+  
+  
+
+
   Future getImage() async {
     var image = await ImagePicker.pickImage(source: ImageSource.gallery);
     var uuid = new Uuid();
+    var id = uuid.v1();
     setState(() {
       _image = image;
       print(_image);
     });
-    final StorageReference storageReference = FirebaseStorage.instance.ref().child('images/').child('${uuid.v1()}');
+    final StorageReference storageReference = FirebaseStorage.instance.ref().child('images/').child('${id}');
     final StorageUploadTask uploadTask = storageReference.putFile(_image);
     final StreamSubscription<StorageTaskEvent> streamSubscription = uploadTask.events.listen((event) {
       print('EVENT ${event.type}');
     });
 
-    await uploadTask.onComplete;
+    await uploadTask.onComplete.then((data) => _replaceUserId(id));
     streamSubscription.cancel();
+
+
+
 
       Flushbar(
       title:  "Your meme was send to the stratosphere 🚀",
