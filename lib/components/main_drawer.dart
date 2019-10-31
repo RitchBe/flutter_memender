@@ -35,7 +35,6 @@ class MainDrawer extends StatelessWidget {
                 children: <Widget>[
                   RawMaterialButton(
                     onPressed: () {
-                      print('no');
                       Navigator.popAndPushNamed(context, '/');
                     },
                     child: Padding(
@@ -59,8 +58,8 @@ class MainDrawer extends StatelessWidget {
                 children: <Widget>[
                   RawMaterialButton(
                     onPressed: () {
-                      print('mofo');
-                      Navigator.popAndPushNamed(context, '/top', arguments: {'order': 'All time favorites'});
+                      Navigator.popAndPushNamed(context, '/top',
+                          arguments: {'order': 'All time favorites'});
                     },
                     child: Padding(
                       padding: EdgeInsets.only(left: 20.0),
@@ -83,7 +82,8 @@ class MainDrawer extends StatelessWidget {
                 children: <Widget>[
                   RawMaterialButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, '/top', arguments: {'order': 'Monthly favorites'});
+                      Navigator.pushNamed(context, '/top',
+                          arguments: {'order': 'Monthly favorites'});
                     },
                     child: Padding(
                       padding: EdgeInsets.only(left: 20.0),
@@ -106,7 +106,8 @@ class MainDrawer extends StatelessWidget {
                 children: <Widget>[
                   RawMaterialButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, '/top', arguments: {'order': 'Weekly favorites'});
+                      Navigator.pushNamed(context, '/top',
+                          arguments: {'order': 'Weekly favorites'});
                     },
                     child: Padding(
                       padding: EdgeInsets.only(left: 20.0),
@@ -116,7 +117,6 @@ class MainDrawer extends StatelessWidget {
                       ),
                     ),
                   ),
-
                 ],
               ),
             ]),

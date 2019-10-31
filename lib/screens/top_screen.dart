@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import '../constants.dart';
-import '../components/custom_app_bar.dart';
-import '../components/custom_bottom_bar.dart';
-import '../components/large_cards.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import '../components/small_card.dart';
@@ -43,7 +40,6 @@ class TopScreen extends StatelessWidget {
   }
 }
 
-
 class TopList extends StatefulWidget {
   final String order;
   TopList(this.order);
@@ -82,7 +78,9 @@ class _TopListState extends State<TopList> {
             builder: (context, snapshot) {
               if (!snapshot.hasData)
                 return const Center(
-                  child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFCFB4F1))),
+                  child: CircularProgressIndicator(
+                      valueColor:
+                          AlwaysStoppedAnimation<Color>(Color(0xFFCFB4F1))),
                 );
 
               if (widget.order == "Monthly favorites") {
@@ -114,8 +112,8 @@ class _TopListState extends State<TopList> {
               return ListView.builder(
                 shrinkWrap: true,
                 itemCount: memesSnapshot.length,
-                itemBuilder: (BuildContext context, int i) => SmallCardList(context,
-                    memesSnapshot[i], storage, 'top'),
+                itemBuilder: (BuildContext context, int i) =>
+                    SmallCardList(context, memesSnapshot[i], storage, 'top'),
               );
             }),
         Positioned(

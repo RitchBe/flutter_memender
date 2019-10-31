@@ -43,7 +43,22 @@ Map favoriteFlush = {
   "My mom liked that one too" : "You should share it with yours 🤱",
   "This one made me cry 😹" :"Not even kidding 🐈",
   "That one felt like a shot of Tequila 🍸": "I am not even alcoholic 🥂",
-  "This one belong in the Hall Of Fame of meme" : "#1🏆🏆"
+  "This one belong in the Hall Of Fame of meme" : "#1🏆🏆",
+    "Why don't you go in the street 🏙️" : "And scream this one is good? 🕺",
+  "You should made a tshit of it 👕" : 'At least some socks 🧦',
+  "Your twitter fanbase will appreciate it" :'🐦🐦',
+  "Don't be shy, you didn't even send it your crush" : "Should you ? 😏",
+  "You should create a sect around this meme 🕯️":"Or maybe a Cult? 🧛",
+  "This one should be in the bible or something": '📕',
+  "Let's start a petition to get this meme on google landing page": '✒️📜',
+  "Let's start a petition to get this one at the Louvre": '✒️📜',
+  "Could you send it to Banksy? 🕊️" : 'Never know 🤷',
+  "How much do you think it cost to have it on Time square ?": '🗽',
+  "Did you share it to your only two friends? 🐿️":"I feel you.. 🎻",
+  "If you want to get some..😏" : "..Send it to your crush 😏",
+  "Are you still at school? 👨‍🎓":"You should make an expose on this one 👨‍🎓",
+  "This one is going straight to the stratosphere 🚀" : "Good job lil Amstrong 👩‍🚀"
+
 };
 
 Map shareFlush = {

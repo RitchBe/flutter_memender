@@ -4,11 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/rendering.dart';
 import 'package:memender/constants.dart';
 import 'package:memender/services/sign_in.dart';
-import 'package:memender/services/sign_in.dart' as prefix0;
 import 'package:url_launcher/url_launcher.dart';
-import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:rflutter_alert/rflutter_alert.dart';
 
 import 'home.dart';
 
@@ -58,13 +55,13 @@ class _LoginScreenState extends State<LoginScreen> {
     print('signInEmail succeeded');
   }
 
-      _launchURL(url) async {
-      if (await canLaunch(url)) {
-        await launch(url);
-      } else {
-        throw 'Could not launch $url';
-      }
+  _launchURL(url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
     }
+  }
 
   _onAlertLoginPressed() {
     String localEmail = '';
@@ -99,10 +96,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                         color: kHighlightColor, width: 2.0)),
                                 border: UnderlineInputBorder()),
                             onChanged: (value) {
-                              print('HERE is the value');
                               localEmail = value;
-
-                              print(localEmail);
                             },
                           ),
                         ),
@@ -125,87 +119,91 @@ class _LoginScreenState extends State<LoginScreen> {
                                 border: UnderlineInputBorder()),
                             onChanged: (value) {
                               localPassword = value;
-                              print(localPassword);
                             },
                           ),
-                        
                         ),
                         Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    textBaseline: TextBaseline.alphabetic,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: <Widget>[
-                      Text(
-                        "By signing in, you accept the",
-                        style: TextStyle(color: Colors.grey[400]),
-                      ),
-                      RawMaterialButton(
-                          materialTapTargetSize:
-                              MaterialTapTargetSize.shrinkWrap,
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.only(top: 20.0, left: 3.0),
-                            child: Text('Privacy Policy',
-                                style: TextStyle(
-                                    decoration: TextDecoration.underline,
-                                    color: Colors.grey[400])),
-                          ),
-                          onPressed: () {
-                            _launchURL(
-                                'https://www.websitepolicies.com/policies/view/3yAkwiZZ');
-                          }),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text('and the',
-                          style: TextStyle(color: Colors.grey[400])),
-                      RawMaterialButton(
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                                bottom: 33.0, left: 3.0, right: 3.0),
-                            child: Text('Terms and Conditions',
-                                style: TextStyle(
-                                    decoration: TextDecoration.underline,
-                                    color: Colors.grey[400])),
-                          ),
-                          onPressed: () {
-                            _launchURL(
-                                'https://www.websitepolicies.com/policies/view/hPUxad33');
-                          }),
-                      Text('of Memender.',
-                          style: TextStyle(color: Colors.grey[400]))
-                    ],
-                  ),
-
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          textBaseline: TextBaseline.alphabetic,
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: <Widget>[
+                            Text(
+                              "By signing in, you accept the",
+                              style: TextStyle(color: Colors.grey[400]),
+                            ),
+                            RawMaterialButton(
+                                materialTapTargetSize:
+                                    MaterialTapTargetSize.shrinkWrap,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: 20.0, left: 3.0),
+                                  child: Text('Privacy Policy',
+                                      style: TextStyle(
+                                          decoration: TextDecoration.underline,
+                                          color: Colors.grey[400])),
+                                ),
+                                onPressed: () {
+                                  _launchURL(
+                                      'https://www.websitepolicies.com/policies/view/3yAkwiZZ');
+                                }),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text('and the',
+                                style: TextStyle(color: Colors.grey[400])),
+                            RawMaterialButton(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      bottom: 33.0, left: 3.0, right: 3.0),
+                                  child: Text('Terms and Conditions',
+                                      style: TextStyle(
+                                          decoration: TextDecoration.underline,
+                                          color: Colors.grey[400])),
+                                ),
+                                onPressed: () {
+                                  _launchURL(
+                                      'https://www.websitepolicies.com/policies/view/hPUxad33');
+                                }),
+                            Text('of Memender.',
+                                style: TextStyle(color: Colors.grey[400]))
+                          ],
+                        ),
                         Container(
                           margin: EdgeInsets.only(top: 0.0, bottom: 0.0),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               Container(
-                                padding: EdgeInsets.only(left: 10.0, right: 10.0),
+                                padding:
+                                    EdgeInsets.only(left: 10.0, right: 10.0),
                                 height: 37.0,
                                 margin: EdgeInsets.only(right: 15.0),
-                                
                                 decoration: BoxDecoration(
-                                  boxShadow: [BoxShadow(color: Colors.grey[400], blurRadius: 1.0, offset: Offset(1 ,1))],
+                                  boxShadow: [
+                                    BoxShadow(
+                                        color: Colors.grey[400],
+                                        blurRadius: 1.0,
+                                        offset: Offset(1, 1))
+                                  ],
                                   borderRadius: BorderRadius.circular(40),
-                                  gradient: LinearGradient(
-                                      colors: <Color>[
-                                        Color(0xffFF6996),
-                                        Color(0xff524A87)
-                                      ]), 
-                                  
+                                  gradient: LinearGradient(colors: <Color>[
+                                    Color(0xffFF6996),
+                                    Color(0xff524A87)
+                                  ]),
+
                                   // color: Color(0xffFF6996)
                                 ),
-                               
                                 child: RawMaterialButton(
-                                
-                                  
-                                  child: Text('Create account', style: TextStyle(color: Colors.white, fontFamily: 'Lato', fontWeight: FontWeight.bold),),
+                                  child: Text(
+                                    'Create account',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontFamily: 'Lato',
+                                        fontWeight: FontWeight.bold),
+                                  ),
                                   onPressed: () {
                                     handleSignInEmail(localEmail, localPassword)
                                         .whenComplete(() => {
@@ -231,7 +229,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                 fillColor: kWhite,
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(40)),
-                                child: Text('Log in' , style: TextStyle(fontFamily: 'Lato', fontWeight: FontWeight.bold)),
+                                child: Text('Log in',
+                                    style: TextStyle(
+                                        fontFamily: 'Lato',
+                                        fontWeight: FontWeight.bold)),
                                 onPressed: () {
                                   handleLogInEmail(localEmail, localPassword)
                                       .whenComplete(() => {
@@ -261,8 +262,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-
-
     return Scaffold(
         key: myGlobals.scaffoldKey,
         body: Stack(

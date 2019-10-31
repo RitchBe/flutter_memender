@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../constants.dart';
+
 import '../services/sign_in.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+
 import 'login_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -88,7 +88,9 @@ class InfoContent extends StatelessWidget {
                           'I made Memender from scratch with my tiny little hands',
                           textAlign: TextAlign.center,
                           style: largerText),
-                      SizedBox(height: 15.0,),
+                      SizedBox(
+                        height: 15.0,
+                      ),
                       Text(
                           'Big thanks to all the memes creators I took the images from.',
                           textAlign: TextAlign.center,
@@ -155,10 +157,12 @@ class InfoContent extends StatelessWidget {
                       )
                     ]),
               ),
-
               Center(
                 child: RawMaterialButton(
-                  child: Text('Log out', style: infoText,),
+                  child: Text(
+                    'Log out',
+                    style: infoText,
+                  ),
                   onPressed: () {
                     handleSignOut();
                     Navigator.of(context).pushAndRemoveUntil(

@@ -1,13 +1,8 @@
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_tindercard/flutter_tindercard.dart';
-import 'package:memender/components/data.dart';
 import 'package:memender/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:memender/services/sign_in.dart';
 import 'package:share/share.dart';
 import 'package:image_downloader/image_downloader.dart';
 import 'package:flushbar/flushbar.dart';
@@ -36,7 +31,7 @@ class _CardSwiperState extends State<CardSwiper> {
   bool hasBeenShuffle = false;
   List<DocumentSnapshot> documents = [];
 
-  int countForAds = 8;
+  int countForAds = 0;
   bool swipingLike = false;
   bool swipingDislike = false;
   double opacityLeftNum = 0;
@@ -46,7 +41,6 @@ class _CardSwiperState extends State<CardSwiper> {
 
   void getDeviceId() async {
     String deviceID = await DeviceId.getID;
-    print('Dvice id is $deviceID');
   }
 
   final FirebaseAuth auth = FirebaseAuth.instance;
@@ -59,8 +53,6 @@ class _CardSwiperState extends State<CardSwiper> {
                 (doc['usersHasSeen'].contains(userId) && goodDocs.length > 2000)
                     ? print('i am')
                     : goodDocs.add(doc),
-                  print('CHECK HERE'),
-                  print(goodDocs.length)
               })
         });
   }
@@ -73,16 +65,12 @@ class _CardSwiperState extends State<CardSwiper> {
     setState(() {
       userId = user.uid;
     });
-    print('HERE IS THE USER REf');
-    print(user.uid);
     // here you write the codes to input the data into firestore
   }
 
   List<String> urls = [];
 
   voting(orientation, doc) async {
-    print('YOU SHOUL NOT GET ACTIVATDED');
-    print(doc['memeId']);
     String memeToVote = '';
     DocumentReference postRef = null;
     Firestore.instance
@@ -96,7 +84,6 @@ class _CardSwiperState extends State<CardSwiper> {
             });
 
     if (orientation == CardSwipeOrientation.LEFT) {
-      print('HERE FUCKER');
       Firestore.instance.runTransaction((Transaction tx) async {
         DocumentSnapshot postSnapshot = await tx.get(postRef);
         if (postSnapshot.exists) {
@@ -162,7 +149,6 @@ class _CardSwiperState extends State<CardSwiper> {
     String title = favoriteFlush.keys.elementAt(randomIndex);
     String message = favoriteFlush.values.elementAt(randomIndex);
 
- 
     Flushbar(
         flushbarPosition: FlushbarPosition.TOP,
         title: title,
@@ -193,7 +179,6 @@ class _CardSwiperState extends State<CardSwiper> {
     _interstitialAd = createInterstitialAd()..load();
     _interstitialAd?.show();
   }
-
 
   @override
   void initState() {
@@ -227,31 +212,6 @@ class _CardSwiperState extends State<CardSwiper> {
                           AlwaysStoppedAnimation<Color>(Color(0xFFCFB4F1))),
                 );
 
-              //   snapshot.data.documents[0]['usersHasSeen'].contains('users/ypFPQsrTAEUrAT1Xih9Ob1LkC8z1') ?
-              //   snapshot.data.docume`nts.remove(snapshot.data.documents[0])
-              //  : print('I dont'),
-
-              // snapshot.data.documents.removeWhere(['usersHasSeen'].contains('users/ypFPQsrTAEUrAT1Xih9Ob1LkC8z1') == true);
-
-              // for (int i = 0; i < snapshot.data.documents.length - 1; i++) {
-              //   snapshot.data.documents[i]['usersHasSeen']
-              //           .contains(userId)
-              //       ? print('')
-              //       : documents.add(snapshot.data.documents[i]);
-              // }
-              // documents.shuffle();
-              // if(hasShuffle == 0) {
-
-              //    goodDocs = documents;
-
-              // hasShuffle++;
-              // }
-
-              // snapshot.data.documents.removeWhere((['usersHasSeen'].contains('users/ypFPQsrTAEUrAT1Xih9Ob1LkC8z1') == true));
-
-// final documents = snapshot.data.documents.removeWhere((item) => item['usersHasSeen'].contains('users/ypFPQsrTAEUrAT1Xih9Ob1LkC8z1') == true);
-// print(documents);
-
               return Container(
                 margin: EdgeInsets.only(
                     bottom: MediaQuery.of(context).size.height * 0.03),
@@ -275,7 +235,6 @@ class _CardSwiperState extends State<CardSwiper> {
                                 children: <Widget>[
                                   RawMaterialButton(
                                       onPressed: () {
-                                        print('you my frind will be saved');
                                         saveMeme(goodDocs[index]);
                                       },
                                       child: bookmark),
@@ -330,10 +289,7 @@ class _CardSwiperState extends State<CardSwiper> {
                                       ],
                                     ),
                                     onPressed: () {
-            
                                       Share.share(goodDocs[index]['url']);
-                                      
-                                      
                                     },
                                   ),
                                   RawMaterialButton(
@@ -372,16 +328,12 @@ class _CardSwiperState extends State<CardSwiper> {
                       /// Get swiping card's alignment
                       ///
                       if (align.x < 2.0 && align.x > -2.0) {
-                        print('I am the state');
-                        print(align.x);
                         setState(() {
                           opacityLeftNum = 0;
                           opacityRightNum = 0;
                         });
                       } else if (align.x < -2) {
                         //Card is LEFT swipin
-                        print("LEFT SWIPINN");
-                        print(align.x);
 
                         setState(() {
                           opacityLeftNum = 0.7;
@@ -390,8 +342,6 @@ class _CardSwiperState extends State<CardSwiper> {
                         });
                       } else if (align.x > 2) {
                         //Card is RIGHT swiping
-                        print(align.x);
-
                         setState(() {
                           // swipingLike = true;
                           opacityRightNum = 0.7;
@@ -407,8 +357,6 @@ class _CardSwiperState extends State<CardSwiper> {
                     swipeCompleteCallback:
                         (CardSwipeOrientation orientation, int index) {
                       /// Get orientation & index of swiped card!
-                      // memeCounter--;
-                      // checkIfMoreMeme(index);
                       setState(() {
                         swipingDislike = false;
                         swipingLike = false;
@@ -448,11 +396,11 @@ class _CardSwiperState extends State<CardSwiper> {
               child: Container(
                 padding: EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
                 decoration: BoxDecoration(
-                    border: Border.all(
-                      color: kPink,
-                    ),
-                    borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                    ),
+                  border: Border.all(
+                    color: kPink,
+                  ),
+                  borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                ),
                 transform: Matrix4.rotationZ(-0.3),
                 child: Text('LIKE',
                     style: TextStyle(
@@ -466,16 +414,17 @@ class _CardSwiperState extends State<CardSwiper> {
               margin: EdgeInsets.only(
                   // top: MediaQuery.of(context).size.height * 0.04,
                   left: MediaQuery.of(context).size.width * 0.75),
-                padding: EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
+              padding: EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
               decoration: BoxDecoration(
-                border: Border.all( color: kBlue),
-                borderRadius:
-                 BorderRadius.all(Radius.circular(5.0),),
-                
+                border: Border.all(color: kBlue),
+                borderRadius: BorderRadius.all(
+                  Radius.circular(5.0),
+                ),
               ),
               transform: Matrix4.rotationZ(0.3),
-
-              child: Text('DISLIKE', style: TextStyle(color: kBlue, fontSize: 16.0, fontFamily: 'Lato')),
+              child: Text('DISLIKE',
+                  style: TextStyle(
+                      color: kBlue, fontSize: 16.0, fontFamily: 'Lato')),
             ))
         // : SizedBox()
       ],
