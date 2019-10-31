@@ -100,8 +100,9 @@ Future signInWithFacebook() async {
 
 
  Future<void> handleSignOut() async {
-      await _auth.signOut();
+    await _auth.signOut();
   // Sign out with google
+
   await googleSignIn.signOut();
   await facebookLogin.logOut();
   }

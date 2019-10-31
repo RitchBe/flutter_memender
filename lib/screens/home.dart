@@ -18,6 +18,8 @@ import 'package:uuid/uuid.dart';
 import 'package:flushbar/flushbar.dart';
 import '../components/nestedTabBarView.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import '../components/flushbarsString.dart';
+import 'dart:math';
 
 class Home extends StatefulWidget {
 
@@ -80,9 +82,9 @@ void initState() {
     print(id);
  
       int i = 0;
-      while (i <= 4) {
+      while (i <= 12) {
          Firestore.instance.collection('memes').document(id).updateData({'userId': userId});
-          Future.delayed(Duration(seconds: 5));
+          Future.delayed(Duration(seconds: 7));
           i++;
         }
       }
@@ -98,7 +100,7 @@ void initState() {
       _image = image;
       print(_image);
     });
-    final StorageReference storageReference = FirebaseStorage.instance.ref().child('images/').child('${id}');
+    final StorageReference storageReference = FirebaseStorage.instance.ref().child('images/').child('$id');
     final StorageUploadTask uploadTask = storageReference.putFile(_image);
     final StreamSubscription<StorageTaskEvent> streamSubscription = uploadTask.events.listen((event) {
       print('EVENT ${event.type}');
@@ -107,17 +109,21 @@ void initState() {
     await uploadTask.onComplete.then((data) => _replaceUserId(id));
     streamSubscription.cancel();
 
-
+    var random = new Random();
+    int randomIndex = random.nextInt(addFlush.length -1);
+    String title = addFlush.keys.elementAt(randomIndex);
+    String message = addFlush.values.elementAt(randomIndex);
 
 
       Flushbar(
-      title:  "Your meme was send to the stratosphere 🚀",
-      message:  "..better be funny or it will get destroy 💣 ",
-      duration:  Duration(seconds: 4),  
+      title:  title,
+      message: message,
+      duration:  Duration(seconds: 5),  
       backgroundGradient: LinearGradient(
         colors: [Color(0xFFFF6996), Color(0xFF524A87)]
         )          
     )..show(context);
+     randomIndex = random.nextInt(shareFlush.length -1);
 
 
   }

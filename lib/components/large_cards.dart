@@ -11,7 +11,15 @@ import 'package:memender/services/sign_in.dart';
 import 'package:share/share.dart';
 import 'package:image_downloader/image_downloader.dart';
 import 'package:flushbar/flushbar.dart';
+import '../components/flushbarsString.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_admob/firebase_admob.dart';
+
+import 'dart:math';
+
+import 'package:device_id/device_id.dart';
+
+const String testDevice = '83f7cd37483f08ae';
 
 class CardSwiper extends StatefulWidget {
   @override
@@ -27,26 +35,34 @@ class _CardSwiperState extends State<CardSwiper> {
   );
   bool hasBeenShuffle = false;
   List<DocumentSnapshot> documents = [];
-  void initState() {
-    super.initState();
-    getUserRef();
-    testData();
+
+  int countForAds = 8;
+  bool swipingLike = false;
+  bool swipingDislike = false;
+  double opacityLeftNum = 0;
+  double opacityRightNum = 0;
+
+  String deviceID;
+
+  void getDeviceId() async {
+    String deviceID = await DeviceId.getID;
+    print('Dvice id is $deviceID');
   }
 
   final FirebaseAuth auth = FirebaseAuth.instance;
   String userId;
 
   Future testData() async {
-    Firestore.instance
-    .collection('memes')
-    .snapshots()
-    .listen((data) => {
-        data.documents.shuffle(),
-        data.documents.forEach((doc) => {
-          doc['usersHasSeen'].contains(userId) ? print('') :
-          goodDocs.add(doc)
-          })
-    });
+    Firestore.instance.collection('memes').snapshots().listen((data) => {
+          data.documents.shuffle(),
+          data.documents.forEach((doc) => {
+                (doc['usersHasSeen'].contains(userId) && goodDocs.length > 2000)
+                    ? print('i am')
+                    : goodDocs.add(doc),
+                  print('CHECK HERE'),
+                  print(goodDocs.length)
+              })
+        });
   }
 
   getUserRef() async {
@@ -103,12 +119,14 @@ class _CardSwiperState extends State<CardSwiper> {
         }
       });
     }
-        setState(() {
-      bookmark = Icon(
-    Icons.bookmark_border,
-    color: kHighlightColor,
-  );
+
+    setState(() {
+      countForAds++;
     });
+
+    if (countForAds % 10 == 0) {
+      loadAndShowAds();
+    }
 
     // var list = List();
     // list.add('test');
@@ -134,19 +152,64 @@ class _CardSwiperState extends State<CardSwiper> {
 
     setState(() {
       bookmark = Icon(
-    Icons.bookmark,
-    color: kHighlightColor,
-  );
+        Icons.bookmark,
+        color: kHighlightColor,
+      );
     });
 
+    var random = new Random();
+    int randomIndex = random.nextInt(favoriteFlush.length - 1);
+    String title = favoriteFlush.keys.elementAt(randomIndex);
+    String message = favoriteFlush.values.elementAt(randomIndex);
+
+ 
     Flushbar(
         flushbarPosition: FlushbarPosition.TOP,
-        title: "Meme saved 🖼️",
-        message: "..somewhere in your gallery 🔮️ ",
-        duration: Duration(seconds: 4),
+        title: title,
+        message: message,
+        duration: Duration(seconds: 5),
         backgroundGradient:
             LinearGradient(colors: [Color(0xFFFF6996), Color(0xFF524A87)]))
       ..show(context);
+
+    randomIndex = random.nextInt(favoriteFlush.length - 1);
+  }
+
+  final MobileAdTargetingInfo targetingInfo = MobileAdTargetingInfo(
+    testDevices: testDevice != null ? <String>[testDevice] : null,
+  );
+
+  InterstitialAd _interstitialAd;
+  InterstitialAd createInterstitialAd() {
+    return InterstitialAd(
+        adUnitId: 'ca-app-pub-1373918645012713/5272851675',
+        listener: (MobileAdEvent event) {
+          print('Interstitial ad even $event');
+        });
+  }
+
+  loadAndShowAds() {
+    _interstitialAd?.dispose();
+    _interstitialAd = createInterstitialAd()..load();
+    _interstitialAd?.show();
+  }
+
+
+  @override
+  void initState() {
+    super.initState();
+    getUserRef();
+    testData();
+    getDeviceId();
+
+    FirebaseAdMob.instance
+        .initialize(appId: 'ca-app-pub-1373918645012713~9842652074');
+  }
+
+  @override
+  void dispose() {
+    _interstitialAd?.dispose();
+    super.dispose();
   }
 
   @override
@@ -155,7 +218,7 @@ class _CardSwiperState extends State<CardSwiper> {
     return Stack(
       children: <Widget>[
         StreamBuilder(
-            stream: Firestore.instance.collection('memes').snapshots(),
+            stream: Firestore.instance.collection('memes').limit(1).snapshots(),
             builder: (context, snapshot) {
               if (!snapshot.hasData)
                 return const Center(
@@ -169,25 +232,22 @@ class _CardSwiperState extends State<CardSwiper> {
               //  : print('I dont'),
 
               // snapshot.data.documents.removeWhere(['usersHasSeen'].contains('users/ypFPQsrTAEUrAT1Xih9Ob1LkC8z1') == true);
-              
+
               // for (int i = 0; i < snapshot.data.documents.length - 1; i++) {
               //   snapshot.data.documents[i]['usersHasSeen']
               //           .contains(userId)
               //       ? print('')
-              //       : documents.add(snapshot.data.documents[i]); 
+              //       : documents.add(snapshot.data.documents[i]);
               // }
               // documents.shuffle();
               // if(hasShuffle == 0) {
-               
-             
+
               //    goodDocs = documents;
-             
+
               // hasShuffle++;
               // }
 
-
-  
-                    // snapshot.data.documents.removeWhere((['usersHasSeen'].contains('users/ypFPQsrTAEUrAT1Xih9Ob1LkC8z1') == true));
+              // snapshot.data.documents.removeWhere((['usersHasSeen'].contains('users/ypFPQsrTAEUrAT1Xih9Ob1LkC8z1') == true));
 
 // final documents = snapshot.data.documents.removeWhere((item) => item['usersHasSeen'].contains('users/ypFPQsrTAEUrAT1Xih9Ob1LkC8z1') == true);
 // print(documents);
@@ -216,16 +276,14 @@ class _CardSwiperState extends State<CardSwiper> {
                                   RawMaterialButton(
                                       onPressed: () {
                                         print('you my frind will be saved');
-                                        saveMeme(
-                                            goodDocs[index]);
+                                        saveMeme(goodDocs[index]);
                                       },
                                       child: bookmark),
                                 ],
                               ),
                               Expanded(
                                 child: goodDocs.first != null
-                                    ? Image.network(
-                                        goodDocs[index]['url'])
+                                    ? Image.network(goodDocs[index]['url'])
                                     : CircularProgressIndicator(
                                         valueColor:
                                             AlwaysStoppedAnimation<Color>(
@@ -248,9 +306,7 @@ class _CardSwiperState extends State<CardSwiper> {
                                         Padding(
                                           padding: EdgeInsets.all(8.0),
                                           child: Text(
-                                              goodDocs[index]
-                                                          ['downvote'] >
-                                                      0
+                                              goodDocs[index]['downvote'] > 0
                                                   ? '${((goodDocs[index]['downvote'] / goodDocs[index]['total']) * 100).round()}%'
                                                   : '0%',
                                               style: TextStyle(
@@ -274,8 +330,10 @@ class _CardSwiperState extends State<CardSwiper> {
                                       ],
                                     ),
                                     onPressed: () {
-                                      Share.share(goodDocs[index]
-                                          ['url']);
+            
+                                      Share.share(goodDocs[index]['url']);
+                                      
+                                      
                                     },
                                   ),
                                   RawMaterialButton(
@@ -290,9 +348,7 @@ class _CardSwiperState extends State<CardSwiper> {
                                         Padding(
                                           padding: EdgeInsets.all(8.0),
                                           child: Text(
-                                              goodDocs[index]
-                                                          ['upvote'] >
-                                                      0
+                                              goodDocs[index]['upvote'] > 0
                                                   ? '${((goodDocs[index]['upvote'] / goodDocs[index]['total']) * 100).round()}%'
                                                   : '0%',
                                               style: TextStyle(
@@ -306,7 +362,7 @@ class _CardSwiperState extends State<CardSwiper> {
                                     },
                                   ),
                                 ],
-                              )
+                              ),
                             ],
                           ),
                         ),
@@ -314,12 +370,38 @@ class _CardSwiperState extends State<CardSwiper> {
                     swipeUpdateCallback:
                         (DragUpdateDetails details, Alignment align) {
                       /// Get swiping card's alignment
-                      if (align.x < 0) {
+                      ///
+                      if (align.x < 2.0 && align.x > -2.0) {
+                        print('I am the state');
+                        print(align.x);
+                        setState(() {
+                          opacityLeftNum = 0;
+                          opacityRightNum = 0;
+                        });
+                      } else if (align.x < -2) {
                         //Card is LEFT swipin
+                        print("LEFT SWIPINN");
+                        print(align.x);
 
-                      } else if (align.x > 0) {
+                        setState(() {
+                          opacityLeftNum = 0.7;
+
+                          // swipingDislike = true;
+                        });
+                      } else if (align.x > 2) {
                         //Card is RIGHT swiping
+                        print(align.x);
 
+                        setState(() {
+                          // swipingLike = true;
+                          opacityRightNum = 0.7;
+                        });
+                      }
+                      if (align.x > 10.0 || align.x < -10.0) {
+                        setState(() {
+                          opacityLeftNum = 0;
+                          opacityRightNum = 0;
+                        });
                       }
                     },
                     swipeCompleteCallback:
@@ -327,6 +409,16 @@ class _CardSwiperState extends State<CardSwiper> {
                       /// Get orientation & index of swiped card!
                       // memeCounter--;
                       // checkIfMoreMeme(index);
+                      setState(() {
+                        swipingDislike = false;
+                        swipingLike = false;
+                        opacityLeftNum = 0;
+                        opacityRightNum = 0;
+                        bookmark = Icon(
+                          Icons.bookmark_border,
+                          color: kHighlightColor,
+                        );
+                      });
                       voting(orientation, goodDocs[index]);
                     }),
               );
@@ -344,7 +436,48 @@ class _CardSwiperState extends State<CardSwiper> {
             width: MediaQuery.of(context).size.width * 1,
             height: MediaQuery.of(context).size.height * 0.05,
           ),
-        )
+        ),
+        // swipingLike ?
+        AnimatedOpacity(
+            duration: Duration(milliseconds: 100),
+            opacity: opacityRightNum,
+            child: Container(
+              margin: EdgeInsets.only(
+                  top: MediaQuery.of(context).size.height * 0.15,
+                  left: MediaQuery.of(context).size.width * 0.1),
+              child: Container(
+                padding: EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
+                decoration: BoxDecoration(
+                    border: Border.all(
+                      color: kPink,
+                    ),
+                    borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                    ),
+                transform: Matrix4.rotationZ(-0.3),
+                child: Text('LIKE',
+                    style: TextStyle(
+                        color: kPink, fontSize: 16.0, fontFamily: 'Lato')),
+              ),
+            )),
+        AnimatedOpacity(
+            duration: Duration(milliseconds: 100),
+            opacity: opacityLeftNum,
+            child: Container(
+              margin: EdgeInsets.only(
+                  // top: MediaQuery.of(context).size.height * 0.04,
+                  left: MediaQuery.of(context).size.width * 0.75),
+                padding: EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
+              decoration: BoxDecoration(
+                border: Border.all( color: kBlue),
+                borderRadius:
+                 BorderRadius.all(Radius.circular(5.0),),
+                
+              ),
+              transform: Matrix4.rotationZ(0.3),
+
+              child: Text('DISLIKE', style: TextStyle(color: kBlue, fontSize: 16.0, fontFamily: 'Lato')),
+            ))
+        // : SizedBox()
       ],
     );
   }
