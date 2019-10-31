@@ -40,16 +40,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
   getUserRef() async {
     final FirebaseUser user = await auth.currentUser();
     final uid = user.uid;
-    print('HERE');
-    print(uid);
     DocumentReference userRef =
         Firestore.instance.collection('users').document(uid);
     setState(() {
       userId = user.uid;
     });
-    // here you write the codes to input the data into firestore
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -68,15 +64,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
               builder: (context, snapshot) {
                 if (!snapshot.hasData)
                   return const Center(
-                    child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFCFB4F1))),
+                    child: CircularProgressIndicator(
+                        valueColor:
+                            AlwaysStoppedAnimation<Color>(Color(0xFFCFB4F1))),
                   );
                 return Container(
                   height: MediaQuery.of(context).size.height * 1,
                   child: ListView.builder(
                     shrinkWrap: true,
                     itemCount: snapshot.data.documents.length,
-                    itemBuilder: (BuildContext context, int i) => SmallCardList(context,
-                         snapshot.data.documents[i], storage, 'uploaded'),
+                    itemBuilder: (BuildContext context, int i) => SmallCardList(
+                        context,
+                        snapshot.data.documents[i],
+                        storage,
+                        'uploaded'),
                   ),
                 );
               }),

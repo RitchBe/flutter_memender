@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
-
 import '../constants.dart';
-
-import '../screens/home.dart';
-import '../screens/profile.dart';
 import 'large_cards.dart';
 import 'nestedTabBarView.dart';
 

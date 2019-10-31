@@ -1,4 +1,3 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:memender/screens/favorite.dart';
 import '../screens/profile.dart';
