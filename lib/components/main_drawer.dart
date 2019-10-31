@@ -63,7 +63,7 @@ class MainDrawer extends StatelessWidget {
                       Navigator.popAndPushNamed(context, '/top', arguments: {'order': 'All time favorites'});
                     },
                     child: Padding(
-                      padding: EdgeInsets.only(left: 15.0),
+                      padding: EdgeInsets.only(left: 20.0),
                       child: Text(
                         'All Time Top',
                         style: kDrawerText,
@@ -86,7 +86,7 @@ class MainDrawer extends StatelessWidget {
                       Navigator.pushNamed(context, '/top', arguments: {'order': 'Monthly favorites'});
                     },
                     child: Padding(
-                      padding: EdgeInsets.only(left: 15.0),
+                      padding: EdgeInsets.only(left: 20.0),
                       child: Text(
                         'Monthly Top',
                         style: kDrawerText,
@@ -109,19 +109,14 @@ class MainDrawer extends StatelessWidget {
                       Navigator.pushNamed(context, '/top', arguments: {'order': 'Weekly favorites'});
                     },
                     child: Padding(
-                      padding: EdgeInsets.only(left: 15.0),
+                      padding: EdgeInsets.only(left: 20.0),
                       child: Text(
                         'Weekly Top',
                         style: kDrawerText,
                       ),
                     ),
                   ),
-                  Divider(
-                    color: kHighlightColor,
-                    indent: 15.0,
-                    endIndent: 15.0,
-                    height: 0.0,
-                  ),
+
                 ],
               ),
             ]),

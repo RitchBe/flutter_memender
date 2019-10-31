@@ -3,6 +3,21 @@ import '../constants.dart';
 import '../services/sign_in.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'login_screen.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+TextStyle infoText =
+    TextStyle(fontFamily: 'Lato', color: Colors.white, fontSize: 15.0);
+TextStyle largerText = TextStyle(
+    fontFamily: 'Lato',
+    // fontWeight: FontWeight.bold,
+    color: Colors.white,
+    fontSize: 20.0);
+
+TextStyle mailText = TextStyle(
+    fontFamily: 'Lato',
+    fontWeight: FontWeight.bold,
+    color: Colors.white,
+    fontSize: 15.0);
 
 class Info extends StatelessWidget {
   const Info({Key key}) : super(key: key);
@@ -10,39 +25,35 @@ class Info extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.transparent,
-      body: InfoContent(),
-      drawerScrimColor: Color(0x00),
-      // appBar: AppBar(
-      //   elevation: 0,
-      //   leading: IconButton(
-      //     onPressed: () {
-      //       Navigator.pop(context);
-      //     },
-      //     icon: Icon(Icons.arrow_back),
-      //     color: kHighlightColor,
-      //   ),
-      //   actions: <Widget>[
-      //     Center(
-      //       child: Padding(
-      //         padding: const EdgeInsets.only(right: 15.0),
-      //         child: Text(
-      //           'Info',
-      //           style: TextStyle(
-      //               color: kHighlightColor, fontWeight: FontWeight.bold),
-      //         ),
-      //       ),
-      //     )
-      //   ],
-      // ),
-    );
+        backgroundColor: Colors.transparent,
+        body: InfoContent(),
+        drawerScrimColor: Color(0x00));
   }
 }
 
 class InfoContent extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
+    _launchURL() async {
+      if (await canLaunch('mailto:info@memender.io')) {
+        await launch('mailto:info@memender.io');
+      } else {
+        throw 'Could not launch email';
+      }
+    }
+
+    Container emailLauncher = Container(
+        height: 25.0,
+        child: RawMaterialButton(
+          child: Text(
+            'info@memender.io',
+            style: mailText,
+          ),
+          onPressed: () {
+            _launchURL();
+          },
+        ));
+
     return Container(
         height: MediaQuery.of(context).size.height * 1,
         width: MediaQuery.of(context).size.width * 1,
@@ -51,15 +62,114 @@ class InfoContent extends StatelessWidget {
                 begin: Alignment.bottomLeft,
                 end: Alignment.topRight,
                 colors: [Color(0xFFFF6996), Color(0xFF524A87)])),
-        child: Center(
-          child: RawMaterialButton(
-            child: Text('Log out'),
-            onPressed: (){
-              handleSignOut();
-              Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) {return LoginScreen();}), ModalRoute.withName('/'));
-            },
+        child: Container(
+          padding: EdgeInsets.only(top: 35.0),
+          child: Column(
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  IconButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    icon: Icon(Icons.arrow_back),
+                    color: Colors.white,
+                  ),
+                ],
+              ),
+              Container(
+                height: MediaQuery.of(context).size.height * 0.8,
+                padding: EdgeInsets.only(left: 50.0, right: 50.0),
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                          'I made Memender from scratch with my tiny little hands',
+                          textAlign: TextAlign.center,
+                          style: largerText),
+                      SizedBox(height: 15.0,),
+                      Text(
+                          'Big thanks to all the memes creators I took the images from.',
+                          textAlign: TextAlign.center,
+                          style: largerText),
+                      SizedBox(
+                        height: 50.0,
+                      ),
+                      Text(
+                        'Info ?',
+                        textAlign: TextAlign.center,
+                        style: infoText,
+                      ),
+                      emailLauncher,
+                      SizedBox(
+                        height: 20.0,
+                      ),
+                      Text(
+                        'Have a joke ?',
+                        textAlign: TextAlign.center,
+                        style: infoText,
+                      ),
+                      emailLauncher,
+                      SizedBox(
+                        height: 20.0,
+                      ),
+                      Text(
+                        'Ideas to change my life ?',
+                        textAlign: TextAlign.center,
+                        style: infoText,
+                      ),
+                      emailLauncher,
+                      SizedBox(
+                        height: 20.0,
+                      ),
+                      Text(
+                        'Buy the app for one million ?',
+                        textAlign: TextAlign.center,
+                        style: infoText,
+                      ),
+                      emailLauncher,
+                      SizedBox(
+                        height: 20.0,
+                      ),
+                      Text(
+                        'Anything else ?',
+                        textAlign: TextAlign.center,
+                        style: infoText,
+                      ),
+                      emailLauncher,
+                      SizedBox(
+                        height: 20.0,
+                      ),
+                      Text(
+                        'Offended ?',
+                        textAlign: TextAlign.center,
+                        style: infoText,
+                      ),
+                      SizedBox(
+                        height: 3.0,
+                      ),
+                      Text(
+                        '🐈',
+                        style: TextStyle(fontSize: 25.0),
+                      )
+                    ]),
+              ),
+
+              Center(
+                child: RawMaterialButton(
+                  child: Text('Log out', style: infoText,),
+                  onPressed: () {
+                    handleSignOut();
+                    Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(builder: (context) {
+                      return LoginScreen();
+                    }), ModalRoute.withName('/'));
+                  },
+                ),
+              ),
+            ],
           ),
-        )
-        );
+        ));
   }
 }

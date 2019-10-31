@@ -40,6 +40,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   getUserRef() async {
     final FirebaseUser user = await auth.currentUser();
     final uid = user.uid;
+    print('HERE');
+    print(uid);
     DocumentReference userRef =
         Firestore.instance.collection('users').document(uid);
     setState(() {
@@ -73,7 +75,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   child: ListView.builder(
                     shrinkWrap: true,
                     itemCount: snapshot.data.documents.length,
-                    itemBuilder: (BuildContext context, int i) => SmallCardList(
+                    itemBuilder: (BuildContext context, int i) => SmallCardList(context,
                          snapshot.data.documents[i], storage, 'uploaded'),
                   ),
                 );

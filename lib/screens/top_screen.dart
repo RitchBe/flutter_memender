@@ -114,7 +114,7 @@ class _TopListState extends State<TopList> {
               return ListView.builder(
                 shrinkWrap: true,
                 itemCount: memesSnapshot.length,
-                itemBuilder: (BuildContext context, int i) => SmallCardList(
+                itemBuilder: (BuildContext context, int i) => SmallCardList(context,
                     memesSnapshot[i], storage, 'top'),
               );
             }),
