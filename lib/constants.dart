@@ -10,6 +10,6 @@ var kBlue = Color(0xFFB4C9F1);
 
 var kDrawerText = TextStyle(
   color: kHighlightColor,
-  fontWeight: FontWeight.w100,
+  fontWeight: FontWeight.bold,
   fontSize: 15.0,
 );
