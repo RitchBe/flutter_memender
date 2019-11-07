@@ -12,9 +12,6 @@ import 'package:firebase_admob/firebase_admob.dart';
 
 import 'dart:math';
 
-import 'package:device_id/device_id.dart';
-
-const String testDevice = '83f7cd37483f08ae';
 
 class CardSwiper extends StatefulWidget {
   @override
@@ -39,9 +36,7 @@ class _CardSwiperState extends State<CardSwiper> {
 
   String deviceID;
 
-  void getDeviceId() async {
-    String deviceID = await DeviceId.getID;
-  }
+
 
   final FirebaseAuth auth = FirebaseAuth.instance;
   String userId;
@@ -162,13 +157,14 @@ class _CardSwiperState extends State<CardSwiper> {
   }
 
   final MobileAdTargetingInfo targetingInfo = MobileAdTargetingInfo(
-    testDevices: testDevice != null ? <String>[testDevice] : null,
+    nonPersonalizedAds: false
   );
 
   InterstitialAd _interstitialAd;
   InterstitialAd createInterstitialAd() {
     return InterstitialAd(
         adUnitId: 'ca-app-pub-1373918645012713/5272851675',
+        
         listener: (MobileAdEvent event) {
           print('Interstitial ad even $event');
         });
@@ -185,7 +181,6 @@ class _CardSwiperState extends State<CardSwiper> {
     super.initState();
     getUserRef();
     testData();
-    getDeviceId();
 
     FirebaseAdMob.instance
         .initialize(appId: 'ca-app-pub-1373918645012713~9842652074');
@@ -205,7 +200,7 @@ class _CardSwiperState extends State<CardSwiper> {
         StreamBuilder(
             stream: Firestore.instance.collection('memes').limit(1).snapshots(),
             builder: (context, snapshot) {
-              if (!snapshot.hasData)
+              if (goodDocs.length == 0)
                 return const Center(
                   child: CircularProgressIndicator(
                       valueColor:
@@ -289,7 +284,7 @@ class _CardSwiperState extends State<CardSwiper> {
                                       ],
                                     ),
                                     onPressed: () {
-                                      Share.share(goodDocs[index]['url']);
+                                      Share.share(goodDocs[index]['url'] + ' ' + "Send with Memender" );
                                     },
                                   ),
                                   RawMaterialButton(

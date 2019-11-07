@@ -63,6 +63,29 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                         valueColor:
                             AlwaysStoppedAnimation<Color>(Color(0xFFCFB4F1))),
                   );
+                  if (snapshot.data.documents.length == 0)
+                  return Center(
+                    // child: Text('No uploaded image yet, hurry up. Little rascal.', style: kDrawerText),
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 25.0, right: 25.0, bottom: 30.0),
+                      child: Text('No favorites yet. Better take them when you see them !',
+                      
+                      softWrap: true,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  foreground: Paint()
+                                    ..shader = LinearGradient(
+                                      colors: <Color>[
+                                        Color(0xffFF6996),
+                                        Color(0xff524A87)
+                                      ],
+                                    ).createShader(
+                                        Rect.fromLTWH(0.0, 0.0, 300.0, 7.0)),
+                                  fontSize: 20.0,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'Lato')),
+                    ),
+                    );
 
                 return ListView.builder(
                   shrinkWrap: true,
