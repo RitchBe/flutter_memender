@@ -22,7 +22,7 @@ class _CardSwiperState extends State<CardSwiper> {
   int hasShuffle = 0;
   List goodDocs = [];
   Icon bookmark = Icon(
-    Icons.bookmark_border,
+    Icons.star_border,
     color: kHighlightColor,
   );
   bool hasBeenShuffle = false;
@@ -41,7 +41,23 @@ class _CardSwiperState extends State<CardSwiper> {
   final FirebaseAuth auth = FirebaseAuth.instance;
   String userId;
 
-  Future testData() async {
+
+
+  Future getUserRef() async {
+    final FirebaseUser user = await auth.currentUser();
+    final uid = user.uid;
+    // DocumentReference userRef =
+    //     Firestore.instance.collection('users').document(uid);
+    setState(() {
+      userId = uid;
+      testData();
+    });
+    // here you write the codes to input the data into firestore
+  }
+
+    Future testData() async {
+      print('userId');
+      print(userId);
     Firestore.instance.collection('memes').snapshots().listen((data) => {
           data.documents.shuffle(),
           data.documents.forEach((doc) => {
@@ -50,17 +66,6 @@ class _CardSwiperState extends State<CardSwiper> {
                     : goodDocs.add(doc),
               })
         });
-  }
-
-  getUserRef() async {
-    final FirebaseUser user = await auth.currentUser();
-    final uid = user.uid;
-    DocumentReference userRef =
-        Firestore.instance.collection('users').document(uid);
-    setState(() {
-      userId = user.uid;
-    });
-    // here you write the codes to input the data into firestore
   }
 
   List<String> urls = [];
@@ -106,7 +111,7 @@ class _CardSwiperState extends State<CardSwiper> {
       countForAds++;
     });
 
-    if (countForAds % 10 == 0) {
+    if (countForAds % 8 == 0) {
       loadAndShowAds();
     }
 
@@ -134,13 +139,14 @@ class _CardSwiperState extends State<CardSwiper> {
 
     setState(() {
       bookmark = Icon(
-        Icons.bookmark,
+        Icons.star,
         color: kHighlightColor,
       );
     });
 
     var random = new Random();
     int randomIndex = random.nextInt(favoriteFlush.length - 1);
+    print(randomIndex);
     String title = favoriteFlush.keys.elementAt(randomIndex);
     String message = favoriteFlush.values.elementAt(randomIndex);
 
@@ -153,7 +159,7 @@ class _CardSwiperState extends State<CardSwiper> {
             LinearGradient(colors: [Color(0xFFFF6996), Color(0xFF524A87)]))
       ..show(context);
 
-    randomIndex = random.nextInt(favoriteFlush.length - 1);
+    randomIndex = random.nextInt(favoriteFlush.length - 1) ;
   }
 
   final MobileAdTargetingInfo targetingInfo = MobileAdTargetingInfo(
@@ -180,7 +186,7 @@ class _CardSwiperState extends State<CardSwiper> {
   void initState() {
     super.initState();
     getUserRef();
-    testData();
+    // testData();
 
     FirebaseAdMob.instance
         .initialize(appId: 'ca-app-pub-1373918645012713~9842652074');
@@ -213,8 +219,8 @@ class _CardSwiperState extends State<CardSwiper> {
                 child: TinderSwapCard(
                     animDuration: 800,
                     orientation: AmassOrientation.BOTTOM,
-                    totalNum: 500,
-                    stackNum: 5,
+                    totalNum: 200,
+                    stackNum: 4,
                     swipeEdge: 5,
                     maxWidth: MediaQuery.of(context).size.width * 0.9,
                     maxHeight: MediaQuery.of(context).size.height * 0.7,
@@ -358,7 +364,7 @@ class _CardSwiperState extends State<CardSwiper> {
                         opacityLeftNum = 0;
                         opacityRightNum = 0;
                         bookmark = Icon(
-                          Icons.bookmark_border,
+                          Icons.star_border,
                           color: kHighlightColor,
                         );
                       });

@@ -4,15 +4,25 @@ import '../services/sign_in.dart';
 
 import 'login_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:launch_review/launch_review.dart'; 
+
 
 TextStyle infoText =
     TextStyle(fontFamily: 'Lato', color: Colors.white, fontSize: 15.0);
 TextStyle largerText = TextStyle(
+    
     fontFamily: 'Lato',
     // fontWeight: FontWeight.bold,
     color: Colors.white,
     fontSize: 20.0);
 
+TextStyle reviewText = TextStyle(
+    fontFamily: 'Lato',
+    // fontWeight: FontWeight.bold,
+    color: Colors.white,
+    fontSize: 20.0,
+    fontWeight: FontWeight.bold,
+    decoration: TextDecoration.underline);
 TextStyle mailText = TextStyle(
     fontFamily: 'Lato',
     fontWeight: FontWeight.bold,
@@ -96,7 +106,24 @@ class InfoContent extends StatelessWidget {
                           textAlign: TextAlign.center,
                           style: largerText),
                       SizedBox(
-                        height: 50.0,
+                        height: 15.0,
+                      ),
+                      // Text(
+                      //     "If you like it please let me a review!",
+                      //     textAlign: TextAlign.center,
+                      //     style: reviewText),
+                      RawMaterialButton(
+                          onPressed: () {
+                            LaunchReview.launch();
+                          },
+                          child: Text(
+                            "Hey you ! Liking this app so far? Make a review here!!",
+                            textAlign: TextAlign.center,
+                            style: reviewText,
+                            ),
+                      ),
+                      SizedBox(
+                        height: 30.0,
                       ),
                       Text(
                         'Info ?',
