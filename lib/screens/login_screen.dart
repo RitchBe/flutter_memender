@@ -334,7 +334,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       child: Text('Email sign in',
                                           style: TextStyle(
                                               fontFamily: 'Lato',
-                                              fontSize: 20,
+                                              fontSize: MediaQuery.of(context).size.width * 0.04,
                                               color: Colors.grey)),
                                     ),
                                   ],
@@ -451,7 +451,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Text(
                   'Facebook sign in',
                   style: TextStyle(
-                      fontSize: 20, color: Colors.grey, fontFamily: 'Lato'),
+                      fontSize: MediaQuery.of(context).size.width * 0.04,
+                       color: Colors.grey, fontFamily: 'Lato'),
                 ),
               )
             ],
@@ -499,7 +500,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   'Google Sign In',
                   style: TextStyle(
                     fontFamily: 'Lato',
-                    fontSize: 20,
+                    fontSize: MediaQuery.of(context).size.width * 0.04,
                     color: Colors.grey,
                   ),
                 ),
