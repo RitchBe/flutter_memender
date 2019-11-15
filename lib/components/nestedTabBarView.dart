@@ -47,7 +47,8 @@ class _NestedTabBarState extends State<NestedTabBar>
           ],
         ),
         Container(
-          height: screenHeight * 0.75,
+          
+          height: screenHeight * 0.73,
           child: TabBarView(
             physics: NeverScrollableScrollPhysics(),
             controller: _nestedTabController,
