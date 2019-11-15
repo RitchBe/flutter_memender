@@ -87,11 +87,14 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                     ),
                     );
 
-                return ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: snapshot.data.documents.length,
-                  itemBuilder: (BuildContext context, int i) => SmallCardList(
-                      context, snapshot.data.documents[i], storage, 'favorite'),
+                return Container(
+                  
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: snapshot.data.documents.length,
+                    itemBuilder: (BuildContext context, int i) => SmallCardList(
+                        context, snapshot.data.documents[i], storage, 'favorite'),
+                  ),
                 );
               }),
           Positioned(

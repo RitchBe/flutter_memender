@@ -8,20 +8,17 @@
 </array>
 <key>GADApplicationIdentifier</key>
 <string>ca-app-pub-1373918645012713~7558790589</string>
-<key>LSApplicationQueriesSchemes</key>
+
+<key>CFBundleURLTypes</key>
+<array>
+  <dict>
+  <key>LSApplicationQueriesSchemes</key>
 <array>
   <string>fbapi</string>
   <string>fb-messenger-share-api</string>
   <string>fbauth2</string>
   <string>fbshareextension</string>
 </array>
-<key>CFBundleURLTypes</key>
-<array>
-  <dict>
-  <key>CFBundleURLSchemes</key>
-  <array>
-    <string>fb399052241049631</string>
-  </array>
   </dict>
 </array>
 <key>FacebookAppID</key>
@@ -36,6 +33,7 @@
 		<key>CFBundleURLSchemes</key>
 		<array>
 			<string>com.googleusercontent.apps.139765027095-6rdpocegllpit609volq42rmvlpmqu2i</string>
+			<string>fb399052241049631</string>
 		</array>
 	</dict>
 </array>
