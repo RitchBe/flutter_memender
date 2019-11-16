@@ -42,6 +42,7 @@ dependencies:
   firebase_admob: ^0.9.0+7
   rflutter_alert: ^1.0.3
   launch_review: ^2.0.0
+  flutter_statusbar_text_color: ^0.1.2
 
 
 dev_dependencies:
