@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "139765027095",
+    "firebase_url": "https://memender-47f82.firebaseio.com",
+    "project_id": "memender-47f82",
+    "storage_bucket": "memender-47f82.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:139765027095:android:19c9240a87ee898ff62752",
+        "android_client_info": {
+          "package_name": "xom.ricardoapp.memender"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "139765027095-r9l656jesb80coaje4g1l5hn2j7amnc3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "xom.ricardoapp.memender",
+            "certificate_hash": "20595183ea45770cf76cac619436192adaa3c3e7"
+          }
+        },
+        {
+          "client_id": "139765027095-ic9skjpn4h4ne437kgbgtoad7bgf1jqi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA0_Ho3j0Q3lJ_Fc0Adcl9akFeiiK8JCSE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "139765027095-ic9skjpn4h4ne437kgbgtoad7bgf1jqi.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "139765027095-6rdpocegllpit609volq42rmvlpmqu2i.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "xom.ricardoapp.memender"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

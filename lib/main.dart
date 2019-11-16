@@ -12,6 +12,8 @@ void main() {
   runApp(new MaterialApp(
     debugShowCheckedModeBanner: false,
 
+
+
     
     title: 'FlutterFire App',
     routes: <String, WidgetBuilder>{
