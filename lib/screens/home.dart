@@ -112,7 +112,10 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    if (Platform.isIOS) {
     FlutterStatusbarTextColor.setTextColor(FlutterStatusbarTextColor.dark);
+
+    }
 
     return Scaffold(
       appBar: CustomAppBar(),

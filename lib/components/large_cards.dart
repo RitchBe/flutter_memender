@@ -163,7 +163,7 @@ class _CardSwiperState extends State<CardSwiper> {
   }
 
   final MobileAdTargetingInfo targetingInfo = MobileAdTargetingInfo(
-    nonPersonalizedAds: false
+
   );
 
   InterstitialAd _interstitialAd;
