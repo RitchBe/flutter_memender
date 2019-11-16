@@ -8,8 +8,12 @@ import 'screens/info.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 void main() {
+
   runApp(new MaterialApp(
     debugShowCheckedModeBanner: false,
+
+
+
     
     title: 'FlutterFire App',
     routes: <String, WidgetBuilder>{

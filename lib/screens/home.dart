@@ -19,6 +19,8 @@ import '../components/nestedTabBarView.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../components/flushbarsString.dart';
 import 'dart:math';
+import 'package:flutter_statusbar_text_color/flutter_statusbar_text_color.dart';
+
 
 class Home extends StatefulWidget {
   @override
@@ -26,6 +28,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  
   int _selectedIndex = 0;
   String url = '';
   File _image;
@@ -109,6 +112,8 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    FlutterStatusbarTextColor.setTextColor(FlutterStatusbarTextColor.dark);
+
     return Scaffold(
       appBar: CustomAppBar(),
       backgroundColor: kBackgroundColor,

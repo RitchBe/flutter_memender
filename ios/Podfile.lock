@@ -269,6 +269,11 @@ PODS:
     - FBSDKCoreKit (~> 5.5)
     - FBSDKLoginKit (~> 5.5)
     - Flutter
+<<<<<<< HEAD
+=======
+  - flutter_statusbar_text_color (0.0.1):
+    - Flutter
+>>>>>>> 25c1e70a3bc7facdd90c98ae25b9fa5f76b0bc69
   - Google-Mobile-Ads-SDK (7.52.0):
     - GoogleAppMeasurement (~> 6.0)
   - google_sign_in (0.0.1):
@@ -357,6 +362,10 @@ DEPENDENCIES:
   - firebase_storage (from `.symlinks/plugins/firebase_storage/ios`)
   - Flutter (from `.symlinks/flutter/ios`)
   - flutter_facebook_login (from `.symlinks/plugins/flutter_facebook_login/ios`)
+<<<<<<< HEAD
+=======
+  - flutter_statusbar_text_color (from `.symlinks/plugins/flutter_statusbar_text_color/ios`)
+>>>>>>> 25c1e70a3bc7facdd90c98ae25b9fa5f76b0bc69
   - google_sign_in (from `.symlinks/plugins/google_sign_in/ios`)
   - image_downloader (from `.symlinks/plugins/image_downloader/ios`)
   - image_picker (from `.symlinks/plugins/image_picker/ios`)
@@ -410,6 +419,11 @@ EXTERNAL SOURCES:
     :path: ".symlinks/flutter/ios"
   flutter_facebook_login:
     :path: ".symlinks/plugins/flutter_facebook_login/ios"
+<<<<<<< HEAD
+=======
+  flutter_statusbar_text_color:
+    :path: ".symlinks/plugins/flutter_statusbar_text_color/ios"
+>>>>>>> 25c1e70a3bc7facdd90c98ae25b9fa5f76b0bc69
   google_sign_in:
     :path: ".symlinks/plugins/google_sign_in/ios"
   image_downloader:
@@ -446,6 +460,10 @@ SPEC CHECKSUMS:
   FirebaseStorage: 046abe9ac4e2a1a0e47d72f536490ffa50896632
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
   flutter_facebook_login: cfb5659f686b1c575ef205c6b6fd20db9679d3c4
+<<<<<<< HEAD
+=======
+  flutter_statusbar_text_color: bfeb27e69d90920ed6ebe0cbe83466011c75c4f4
+>>>>>>> 25c1e70a3bc7facdd90c98ae25b9fa5f76b0bc69
   Google-Mobile-Ads-SDK: 62f6244637306cb60a1b4adda067f53224c7a860
   google_sign_in: 27e70a98b529f0b076d4b19f231b81da28b1750b
   GoogleAppMeasurement: dfe55efa543e899d906309eaaac6ca26d249862f

@@ -7,6 +7,8 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:launch_review/launch_review.dart'; 
 
 
+
+
 TextStyle infoText =
     TextStyle(fontFamily: 'Lato', color: Colors.white, fontSize: 15.0);
 TextStyle largerText = TextStyle(
@@ -73,7 +75,7 @@ class InfoContent extends StatelessWidget {
                 end: Alignment.topRight,
                 colors: [Color(0xFFFF6996), Color(0xFF524A87)])),
         child: Container(
-          padding: EdgeInsets.only(top: 35.0),
+          padding: EdgeInsets.only(top: 20.0),
           child: Column(
             children: <Widget>[
               Row(
@@ -123,7 +125,7 @@ class InfoContent extends StatelessWidget {
                             ),
                       ),
                       SizedBox(
-                        height: 30.0,
+                        height: MediaQuery.of(context).size.height * 0.025,
                       ),
                       Text(
                         'Info ?',
@@ -132,7 +134,7 @@ class InfoContent extends StatelessWidget {
                       ),
                       emailLauncher,
                       SizedBox(
-                        height: 20.0,
+                        height: MediaQuery.of(context).size.height * 0.02,
                       ),
                       Text(
                         'Have a joke ?',
@@ -141,7 +143,7 @@ class InfoContent extends StatelessWidget {
                       ),
                       emailLauncher,
                       SizedBox(
-                        height: 20.0,
+                        height: MediaQuery.of(context).size.height * 0.02,
                       ),
                       Text(
                         'Ideas to change my life ?',
@@ -150,7 +152,7 @@ class InfoContent extends StatelessWidget {
                       ),
                       emailLauncher,
                       SizedBox(
-                        height: 20.0,
+                        height: MediaQuery.of(context).size.height * 0.02,
                       ),
                       Text(
                         'Buy the app for one million ?',
@@ -159,7 +161,7 @@ class InfoContent extends StatelessWidget {
                       ),
                       emailLauncher,
                       SizedBox(
-                        height: 20.0,
+                        height: MediaQuery.of(context).size.height * 0.02,
                       ),
                       Text(
                         'Anything else ?',
