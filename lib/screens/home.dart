@@ -57,12 +57,14 @@ class _HomeState extends State<Home> {
     TopScreen(),
   ];
 
+//FUNTCION FOR BOTTOM BAR
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
   }
 
+  //GET USER ID WHEN ADDING TO THE DB
   Future _replaceUserId(id) async {
     DocumentReference postRef = null;
 
@@ -77,6 +79,7 @@ class _HomeState extends State<Home> {
     }
   }
 
+  //GET IMAGE TO ADD TO THE DATABASE
   Future getImage() async {
     var image = await ImagePicker.pickImage(source: ImageSource.gallery);
     var uuid = new Uuid();
@@ -122,6 +125,7 @@ class _HomeState extends State<Home> {
       backgroundColor: kBackgroundColor,
       body: _widgetOptions.elementAt(_selectedIndex),
       bottomNavigationBar: BottomNavigationBar(
+          backgroundColor: kWhite,
           elevation: 0.0,
           selectedItemColor: Colors.pink,
           currentIndex: _selectedIndex,

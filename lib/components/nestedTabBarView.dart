@@ -46,16 +46,19 @@ class _NestedTabBarState extends State<NestedTabBar>
             ),
           ],
         ),
-        Container(
-          
-          height: screenHeight * 0.73,
-          child: TabBarView(
-            physics: NeverScrollableScrollPhysics(),
-            controller: _nestedTabController,
-            children: <Widget>[
-              Container(child: Profile()), //ListView
-              Container(child: Favorite()), //ListView
-            ],
+        Expanded(
+                  child: Container(
+            
+            
+            height: screenHeight * 0.73,
+            child: TabBarView(
+              physics: NeverScrollableScrollPhysics(),
+              controller: _nestedTabController,
+              children: <Widget>[
+                Container(child: Profile()), //ListView
+                Container(child: Favorite()), //ListView
+              ],
+            ),
           ),
         )
       ],

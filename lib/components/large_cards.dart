@@ -12,6 +12,7 @@ import 'package:firebase_admob/firebase_admob.dart';
 
 import 'dart:math';
 
+//HOME CARD SWIPER
 
 class CardSwiper extends StatefulWidget {
   @override
@@ -21,6 +22,8 @@ class CardSwiper extends StatefulWidget {
 class _CardSwiperState extends State<CardSwiper> {
   int hasShuffle = 0;
   List goodDocs = [];
+
+  //TO CHANGE WHEN IMAGE IS LIKED
   Icon bookmark = Icon(
     Icons.star_border,
     color: kHighlightColor,
@@ -36,12 +39,8 @@ class _CardSwiperState extends State<CardSwiper> {
 
   String deviceID;
 
-
-
   final FirebaseAuth auth = FirebaseAuth.instance;
   String userId;
-
-
 
   Future getUserRef() async {
     final FirebaseUser user = await auth.currentUser();
@@ -55,13 +54,14 @@ class _CardSwiperState extends State<CardSwiper> {
     // here you write the codes to input the data into firestore
   }
 
-    Future testData() async {
-      print('userId');
-      print(userId);
+  //FUNCTION GETTING THE IMAGES.
+  Future testData() async {
+    print('userId');
+    print(userId);
     Firestore.instance.collection('memes').snapshots().listen((data) => {
           data.documents.shuffle(),
           data.documents.forEach((doc) => {
-                (doc['usersHasSeen'].contains(userId) && goodDocs.length > 2000)
+                (doc['usersHasSeen'].contains(userId))
                     ? print('i am')
                     : goodDocs.add(doc),
               })
@@ -71,6 +71,7 @@ class _CardSwiperState extends State<CardSwiper> {
   List<String> urls = [];
 
   voting(orientation, doc) async {
+    print('VOTINg');
     String memeToVote = '';
     DocumentReference postRef = null;
     Firestore.instance
@@ -84,6 +85,7 @@ class _CardSwiperState extends State<CardSwiper> {
             });
 
     if (orientation == CardSwipeOrientation.LEFT) {
+      print("Voting left");
       Firestore.instance.runTransaction((Transaction tx) async {
         DocumentSnapshot postSnapshot = await tx.get(postRef);
         if (postSnapshot.exists) {
@@ -95,6 +97,7 @@ class _CardSwiperState extends State<CardSwiper> {
         }
       });
     } else if (orientation == CardSwipeOrientation.RIGHT) {
+      print("Voting righht");
       Firestore.instance.runTransaction((Transaction tx) async {
         DocumentSnapshot postSnapshot = await tx.get(postRef);
         if (postSnapshot.exists) {
@@ -106,12 +109,12 @@ class _CardSwiperState extends State<CardSwiper> {
         }
       });
     }
-
+    
     setState(() {
       countForAds++;
     });
 
-    if (countForAds % 8 == 0) {
+    if (countForAds % 20 == 0) {
       loadAndShowAds();
     }
 
@@ -159,18 +162,15 @@ class _CardSwiperState extends State<CardSwiper> {
             LinearGradient(colors: [Color(0xFFFF6996), Color(0xFF524A87)]))
       ..show(context);
 
-    randomIndex = random.nextInt(favoriteFlush.length - 1) ;
+    randomIndex = random.nextInt(favoriteFlush.length - 1);
   }
 
-  final MobileAdTargetingInfo targetingInfo = MobileAdTargetingInfo(
-
-  );
+  final MobileAdTargetingInfo targetingInfo = MobileAdTargetingInfo();
 
   InterstitialAd _interstitialAd;
   InterstitialAd createInterstitialAd() {
     return InterstitialAd(
         adUnitId: 'ca-app-pub-1373918645012713/5272851675',
-        
         listener: (MobileAdEvent event) {
           print('Interstitial ad even $event');
         });
@@ -290,7 +290,9 @@ class _CardSwiperState extends State<CardSwiper> {
                                       ],
                                     ),
                                     onPressed: () {
-                                      Share.share(goodDocs[index]['url'] + ' ' + "Send with Memender" );
+                                      Share.share(goodDocs[index]['url'] +
+                                          ' ' +
+                                          "Send with Memender");
                                     },
                                   ),
                                   RawMaterialButton(

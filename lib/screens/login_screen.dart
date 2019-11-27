@@ -63,8 +63,7 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-
-   _onAlertLoginPressed() {
+  _onAlertLoginPressed() {
     String localEmail = '';
     String localPassword = '';
     showDialog(
@@ -74,7 +73,7 @@ class _LoginScreenState extends State<LoginScreen> {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20)),
               child: SingleChildScrollView(
-                              child: Container(
+                child: Container(
                     height: 270.0,
                     margin: EdgeInsets.all(8.0),
                     child: Column(
@@ -130,9 +129,12 @@ class _LoginScreenState extends State<LoginScreen> {
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: <Widget>[
                               Text(
-                                
                                 "By signing in, you accept the",
-                                style: TextStyle(color: Colors.grey[400], fontSize: MediaQuery.of(dialogContex).size.width * 0.03),
+                                style: TextStyle(
+                                    color: Colors.grey[400],
+                                    fontSize:
+                                        MediaQuery.of(dialogContex).size.width *
+                                            0.03),
                               ),
                               RawMaterialButton(
                                   materialTapTargetSize:
@@ -142,8 +144,13 @@ class _LoginScreenState extends State<LoginScreen> {
                                         top: 24.0, right: 20.0),
                                     child: Text('Privacy Policy',
                                         style: TextStyle(
-                                            fontSize: MediaQuery.of(dialogContex).size.width * 0.03,
-                                            decoration: TextDecoration.underline,
+                                            fontSize:
+                                                MediaQuery.of(dialogContex)
+                                                        .size
+                                                        .width *
+                                                    0.03,
+                                            decoration:
+                                                TextDecoration.underline,
                                             color: Colors.grey[400])),
                                   ),
                                   onPressed: () {
@@ -157,15 +164,25 @@ class _LoginScreenState extends State<LoginScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Text('and the',
-                                  style: TextStyle(color: Colors.grey[400], fontSize: MediaQuery.of(dialogContex).size.width * 0.03)),
+                                  style: TextStyle(
+                                      color: Colors.grey[400],
+                                      fontSize: MediaQuery.of(dialogContex)
+                                              .size
+                                              .width *
+                                          0.03)),
                               RawMaterialButton(
                                   child: Padding(
                                     padding: const EdgeInsets.only(
                                         bottom: 38.0, left: 3.0, right: 3.0),
                                     child: Text('Terms and Conditions',
                                         style: TextStyle(
-                                            fontSize: MediaQuery.of(dialogContex).size.width * 0.03,
-                                            decoration: TextDecoration.underline,
+                                            fontSize:
+                                                MediaQuery.of(dialogContex)
+                                                        .size
+                                                        .width *
+                                                    0.03,
+                                            decoration:
+                                                TextDecoration.underline,
                                             color: Colors.grey[400])),
                                   ),
                                   onPressed: () {
@@ -173,7 +190,12 @@ class _LoginScreenState extends State<LoginScreen> {
                                         'https://www.websitepolicies.com/policies/view/hPUxad33');
                                   }),
                               Text('of Memender.',
-                                  style: TextStyle(color: Colors.grey[400], fontSize: MediaQuery.of(dialogContex).size.width * 0.03))
+                                  style: TextStyle(
+                                      color: Colors.grey[400],
+                                      fontSize: MediaQuery.of(dialogContex)
+                                              .size
+                                              .width *
+                                          0.03))
                             ],
                           ),
                           Container(
@@ -210,7 +232,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                           fontWeight: FontWeight.bold),
                                     ),
                                     onPressed: () {
-                                      handleSignInEmail(localEmail, localPassword)
+                                      handleSignInEmail(
+                                              localEmail, localPassword)
                                           .whenComplete(() => {
                                                 FirebaseAuth.instance
                                                     .currentUser()
@@ -278,7 +301,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 width: MediaQuery.of(context).size.width * 0.8,
                 height: MediaQuery.of(context).size.height * 0.7,
                 child: SingleChildScrollView(
-                                  child: Column(
+                  child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Column(
@@ -318,7 +341,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                             Container(
                               width: MediaQuery.of(context).size.width * 0.6,
-                              height: MediaQuery.of(context).size.height * 0.095,
+                              height:
+                                  MediaQuery.of(context).size.height * 0.095,
                               child: RawMaterialButton(
                                 splashColor: Colors.grey,
                                 fillColor: Colors.white,
@@ -337,11 +361,15 @@ class _LoginScreenState extends State<LoginScreen> {
                                         color: Color(0xff524A87),
                                       ),
                                       Padding(
-                                        padding: const EdgeInsets.only(left: 8.0),
+                                        padding:
+                                            const EdgeInsets.only(left: 8.0),
                                         child: Text('Email sign in',
                                             style: TextStyle(
                                                 fontFamily: 'Lato',
-                                                fontSize: MediaQuery.of(context).size.width * 0.04,
+                                                fontSize: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.04,
                                                 color: Colors.grey)),
                                       ),
                                     ],
@@ -460,7 +488,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   'Facebook sign in',
                   style: TextStyle(
                       fontSize: MediaQuery.of(context).size.width * 0.04,
-                       color: Colors.grey, fontFamily: 'Lato'),
+                      color: Colors.grey,
+                      fontFamily: 'Lato'),
                 ),
               )
             ],
