@@ -81,12 +81,18 @@ class _HomeState extends State<Home> {
 
   //GET IMAGE TO ADD TO THE DATABASE
   Future getImage() async {
+    print('getting image');
     var image = await ImagePicker.pickImage(source: ImageSource.gallery);
     var uuid = new Uuid();
     var id = uuid.v1();
-    setState(() {
+   
+  
+            setState(() {
       _image = image;
+      print('got it');
     });
+    
+
     final StorageReference storageReference =
         FirebaseStorage.instance.ref().child('images/').child('$id');
     final StorageUploadTask uploadTask = storageReference.putFile(_image);
@@ -112,6 +118,7 @@ class _HomeState extends State<Home> {
       ..show(context);
     randomIndex = random.nextInt(shareFlush.length - 1);
   }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -136,22 +143,22 @@ class _HomeState extends State<Home> {
             BottomNavigationBarItem(
               icon: Image.asset(
                 'assets/home.png',
-                width: 18.0,
+                width: 24.0,
               ),
               activeIcon: Image.asset(
                 'assets/homeFocused.png',
-                width: 18.0,
+                width: 24.0,
               ),
               title: Text('Home'),
             ),
             BottomNavigationBarItem(
               icon: Image.asset(
                 'assets/user.png',
-                width: 18.0,
+                width: 24.0,
               ),
               activeIcon: Image.asset(
                 'assets/userFocused.png',
-                width: 18.0,
+                width: 24.0,
               ),
               title: Text("Profile"),
             ),

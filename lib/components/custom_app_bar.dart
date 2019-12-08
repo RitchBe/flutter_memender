@@ -21,27 +21,33 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
       ),
 
       leading: Builder(builder: (BuildContext context) {
-        return IconButton(
-          icon:  Icon(Icons.menu, color: kHighlightColor, size: 24.0,),
-          onPressed: () {
-            Scaffold.of(context).openDrawer();
-          },
-          splashColor: kOpacityColor,
-          highlightColor: kOpacityColor,
-          tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+        return Container(
+          padding: EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.04),
+          child: IconButton(
+            icon:  Icon(Icons.menu, color: kHighlightColor, size: 28.0,),
+            onPressed: () {
+              Scaffold.of(context).openDrawer();
+            },
+            splashColor: kOpacityColor,
+            highlightColor: kOpacityColor,
+            tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+          ),
         );
       }),
 
       actions: <Widget>[
         Builder(builder: (BuildContext context) {
-          return IconButton(
-            icon:  Icon(Icons.info_outline, color: kHighlightColor, size: 24.0),
-            splashColor: kOpacityColor,
-            highlightColor: kOpacityColor,
-            onPressed: () {
-              Navigator.pushNamed(context, '/info');
-          },
-            tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+          return Container(
+            padding: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.04),
+            child: IconButton(
+              icon:  Icon(Icons.info_outline, color: kHighlightColor, size: 28.0),
+              splashColor: kOpacityColor,
+              highlightColor: kOpacityColor,
+              onPressed: () {
+                Navigator.pushNamed(context, '/info');
+            },
+              tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+            ),
           );
         }),
       ],

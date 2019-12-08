@@ -238,7 +238,10 @@ class _CardSwiperState extends State<CardSwiper> {
                                       onPressed: () {
                                         saveMeme(goodDocs[index]);
                                       },
-                                      child: bookmark),
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(top: 8.0, left: 30.0),
+                                        child: bookmark,
+                                      )),
                                 ],
                               ),
                               Expanded(
@@ -257,14 +260,14 @@ class _CardSwiperState extends State<CardSwiper> {
                                     child: Row(
                                       children: <Widget>[
                                         Padding(
-                                          padding: EdgeInsets.only(top: 8.0),
+                                          padding: EdgeInsets.only(bottom: 10.0),
                                           child: Icon(
                                             Icons.thumb_down,
                                             color: kBlue,
                                           ),
                                         ),
                                         Padding(
-                                          padding: EdgeInsets.all(8.0),
+                                          padding: EdgeInsets.only(bottom: 17.0, left: 5.0),
                                           child: Text(
                                               goodDocs[index]['downvote'] > 0
                                                   ? '${((goodDocs[index]['downvote'] / goodDocs[index]['total']) * 100).round()}%'
@@ -283,9 +286,12 @@ class _CardSwiperState extends State<CardSwiper> {
                                   RawMaterialButton(
                                     child: Row(
                                       children: <Widget>[
-                                        Icon(
-                                          Icons.share,
-                                          color: Color(0xFFF9C9BA),
+                                        Padding(
+                                          padding: const EdgeInsets.only(bottom: 10.0),
+                                          child: Icon(
+                                            Icons.share,
+                                            color: Color(0xFFF9C9BA),
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -300,12 +306,15 @@ class _CardSwiperState extends State<CardSwiper> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.center,
                                       children: <Widget>[
-                                        Icon(
-                                          Icons.favorite,
-                                          color: kPink,
+                                        Padding(
+                                          padding: const EdgeInsets.only(bottom: 10.0),
+                                          child: Icon(
+                                            Icons.favorite,
+                                            color: kPink,
+                                          ),
                                         ),
                                         Padding(
-                                          padding: EdgeInsets.all(8.0),
+                                          padding: EdgeInsets.only(bottom: 17.0, left: 5.0),
                                           child: Text(
                                               goodDocs[index]['upvote'] > 0
                                                   ? '${((goodDocs[index]['upvote'] / goodDocs[index]['total']) * 100).round()}%'
