@@ -74,7 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   borderRadius: BorderRadius.circular(20)),
               child: SingleChildScrollView(
                 child: Container(
-                    height: 270.0,
+                    height: 300.0,
                     margin: EdgeInsets.all(8.0),
                     child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,

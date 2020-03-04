@@ -6,6 +6,8 @@
 	<string>139765027095-6rdpocegllpit609volq42rmvlpmqu2i.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
 	<string>com.googleusercontent.apps.139765027095-6rdpocegllpit609volq42rmvlpmqu2i</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>139765027095-6mqcl5pn1dchuvagvs9r2f31ld3sf8au.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
 	<string>AIzaSyCfuuuLBHkm6tKK-GV_X7hUpAdJkeSgSD8</string>
 	<key>GCM_SENDER_ID</key>
@@ -13,7 +15,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>xom.ricardoapp.memender</string>
+	<string>com.memender.io</string>
 	<key>PROJECT_ID</key>
 	<string>memender-47f82</string>
 	<key>STORAGE_BUCKET</key>

@@ -75,18 +75,26 @@ class InfoContent extends StatelessWidget {
                 end: Alignment.topRight,
                 colors: [Color(0xFFFF6996), Color(0xFF524A87)])),
         child: Container(
-          padding: EdgeInsets.only(top: 20.0),
           child: Column(
             children: <Widget>[
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
+                
                 children: <Widget>[
-                  IconButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    icon: Icon(Icons.arrow_back),
-                    color: Colors.white,
+                  Padding(
+                    padding: const EdgeInsets.only(top: 40.0, left: 20.0),
+                    child: IconButton(
+                      iconSize: 30.0,
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      icon: Icon(
+                          Icons.arrow_back,
+                         
+                          ),
+                      
+                      color: Colors.white,
+                    ),
                   ),
                 ],
               ),
@@ -96,15 +104,11 @@ class InfoContent extends StatelessWidget {
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Text(
-                          'I made Memender from scratch with my tiny little hands',
-                          textAlign: TextAlign.center,
-                          style: largerText),
                       SizedBox(
                         height: 15.0,
                       ),
                       Text(
-                          'Big thanks to all the memes creators I took the images from.',
+                          'Big thanks to all the memes creators around the world.',
                           textAlign: TextAlign.center,
                           style: largerText),
                       SizedBox(
@@ -119,7 +123,7 @@ class InfoContent extends StatelessWidget {
                             LaunchReview.launch();
                           },
                           child: Text(
-                            "Hey you ! Liking this app so far? Make a review here!!",
+                            "Hey you ! Liking this app so far? Make a review here!",
                             textAlign: TextAlign.center,
                             style: reviewText,
                             ),
