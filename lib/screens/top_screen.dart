@@ -13,7 +13,7 @@ class TopScreen extends StatelessWidget {
       backgroundColor: kBackgroundColor,
       body: TopList(routeArgument['order']),
       drawerScrimColor: Color(0x00),
-      appBar: AppBar(
+      appBar: AppBar( 
         elevation: 0,
         backgroundColor: kBackgroundColor,
         leading: IconButton(

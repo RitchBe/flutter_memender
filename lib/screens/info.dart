@@ -99,20 +99,18 @@ class InfoContent extends StatelessWidget {
                 ],
               ),
               Container(
-                height: MediaQuery.of(context).size.height * 0.8,
+                height: MediaQuery.of(context).size.height * 0.7,
                 padding: EdgeInsets.only(left: 50.0, right: 50.0),
                 child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    
                     children: <Widget>[
-                      SizedBox(
-                        height: 15.0,
-                      ),
+              
                       Text(
                           'Big thanks to all the memes creators around the world.',
                           textAlign: TextAlign.center,
                           style: largerText),
                       SizedBox(
-                        height: 15.0,
+                        height: MediaQuery.of(context).size.height * 0.01,
                       ),
                       // Text(
                       //     "If you like it please let me a review!",
@@ -138,7 +136,7 @@ class InfoContent extends StatelessWidget {
                       ),
                       emailLauncher,
                       SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.02,
+                        height: MediaQuery.of(context).size.height * 0.01,
                       ),
                       Text(
                         'Have a joke ?',
@@ -147,7 +145,7 @@ class InfoContent extends StatelessWidget {
                       ),
                       emailLauncher,
                       SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.02,
+                        height: MediaQuery.of(context).size.height * 0.01,
                       ),
                       Text(
                         'Ideas to change my life ?',
@@ -156,7 +154,7 @@ class InfoContent extends StatelessWidget {
                       ),
                       emailLauncher,
                       SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.02,
+                        height: MediaQuery.of(context).size.height * 0.01,
                       ),
                       Text(
                         'Buy the app for one million ?',
@@ -165,7 +163,7 @@ class InfoContent extends StatelessWidget {
                       ),
                       emailLauncher,
                       SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.02,
+                        height: MediaQuery.of(context).size.height * 0.01,
                       ),
                       Text(
                         'Anything else ?',
@@ -174,7 +172,7 @@ class InfoContent extends StatelessWidget {
                       ),
                       emailLauncher,
                       SizedBox(
-                        height: 20.0,
+                        height: MediaQuery.of(context).size.height * 0.01,
                       ),
                       Text(
                         'Offended ?',

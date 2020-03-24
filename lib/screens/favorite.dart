@@ -23,7 +23,6 @@ class FavoriteScreen extends StatefulWidget {
 
 class _FavoriteScreenState extends State<FavoriteScreen> {
   final FirebaseAuth auth = FirebaseAuth.instance;
-
   void initState() {
     super.initState();
     inputData();
@@ -69,7 +68,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                     child: Padding(
                       padding: const EdgeInsets.only(left: 25.0, right: 25.0, bottom: 30.0),
                       child: Text('No favorites yet. Better take them when you see them !',
-                      
+
                       softWrap: true,
                               textAlign: TextAlign.center,
                               style: TextStyle(
@@ -88,7 +87,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                     );
 
                 return Container(
-                  
+
                   child: ListView.builder(
                     shrinkWrap: true,
                     itemCount: snapshot.data.documents.length,

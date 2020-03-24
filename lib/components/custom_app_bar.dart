@@ -17,7 +17,10 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
       title:
       Padding(
         padding: const EdgeInsets.all(14.0),
-        child: SvgPicture.asset('assets/logoSvg.svg'),
+        child: SvgPicture.asset(
+          'assets/logoSvg.svg',
+          height: 40.0,
+          ),
       ),
 
       leading: Builder(builder: (BuildContext context) {

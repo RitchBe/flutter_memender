@@ -74,7 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   borderRadius: BorderRadius.circular(20)),
               child: SingleChildScrollView(
                 child: Container(
-                    height: 300.0,
+                    height: MediaQuery.of(dialogContex).size.height * 0.5,
                     margin: EdgeInsets.all(8.0),
                     child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -122,81 +122,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                 localPassword = value;
                               },
                             ),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            textBaseline: TextBaseline.alphabetic,
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: <Widget>[
-                              Text(
-                                "By signing in, you accept the",
-                                style: TextStyle(
-                                    color: Colors.grey[400],
-                                    fontSize:
-                                        MediaQuery.of(dialogContex).size.width *
-                                            0.03),
-                              ),
-                              RawMaterialButton(
-                                  materialTapTargetSize:
-                                      MaterialTapTargetSize.shrinkWrap,
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        top: 24.0, right: 20.0),
-                                    child: Text('Privacy Policy',
-                                        style: TextStyle(
-                                            fontSize:
-                                                MediaQuery.of(dialogContex)
-                                                        .size
-                                                        .width *
-                                                    0.03,
-                                            decoration:
-                                                TextDecoration.underline,
-                                            color: Colors.grey[400])),
-                                  ),
-                                  onPressed: () {
-                                    _launchURL(
-                                        'https://www.websitepolicies.com/policies/view/3yAkwiZZ');
-                                  }),
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text('and the',
-                                  style: TextStyle(
-                                      color: Colors.grey[400],
-                                      fontSize: MediaQuery.of(dialogContex)
-                                              .size
-                                              .width *
-                                          0.03)),
-                              RawMaterialButton(
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        bottom: 38.0, left: 3.0, right: 3.0),
-                                    child: Text('Terms and Conditions',
-                                        style: TextStyle(
-                                            fontSize:
-                                                MediaQuery.of(dialogContex)
-                                                        .size
-                                                        .width *
-                                                    0.03,
-                                            decoration:
-                                                TextDecoration.underline,
-                                            color: Colors.grey[400])),
-                                  ),
-                                  onPressed: () {
-                                    _launchURL(
-                                        'https://www.websitepolicies.com/policies/view/hPUxad33');
-                                  }),
-                              Text('of Memender.',
-                                  style: TextStyle(
-                                      color: Colors.grey[400],
-                                      fontSize: MediaQuery.of(dialogContex)
-                                              .size
-                                              .width *
-                                          0.03))
-                            ],
                           ),
                           Container(
                             margin: EdgeInsets.only(top: 0.0, bottom: 0.0),
@@ -289,6 +214,15 @@ class _LoginScreenState extends State<LoginScreen> {
         });
   }
 
+  bool policyAccepted = false;
+  bool isVisible = false;
+
+  void _policyChecked(bool newValue) {
+    setState(() {
+      policyAccepted = newValue;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -376,7 +310,13 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ),
                                 ),
                                 onPressed: () {
-                                  _onAlertLoginPressed();
+                                  if (policyAccepted == true) {
+                                     _onAlertLoginPressed();
+                                  } else {
+                                      setState(() {
+                                        isVisible = true;
+                                      });
+                                  }
                                 },
                               ),
                             ),
@@ -389,6 +329,24 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             )),
             Positioned(
+                bottom: 100,
+                width: MediaQuery.of(context).size.width * 1,
+                  child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Visibility(
+                        visible: isVisible,
+                        child: Container(
+                          child: Text(
+                            "*Please accept the term and conditions.",
+                            style: TextStyle(color: Color(0xffFF6996)),
+                            ),
+                        ),
+                ),
+                    ],
+                  ),
+              ),
+            Positioned(
               bottom: 4.0,
               width: MediaQuery.of(context).size.width * 1,
               child: Column(
@@ -397,22 +355,29 @@ class _LoginScreenState extends State<LoginScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     textBaseline: TextBaseline.alphabetic,
-                    crossAxisAlignment: CrossAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
+                      Checkbox(
+                        value: policyAccepted,
+                        onChanged: _policyChecked,
+                      ),
+
+
                       Text(
                         "By signing in, you accept the",
-                        style: TextStyle(color: Colors.grey[400]),
+                        style: TextStyle(color: Color(0xff524A87)),
                       ),
                       RawMaterialButton(
                           materialTapTargetSize:
                               MaterialTapTargetSize.shrinkWrap,
                           child: Padding(
                             padding:
-                                const EdgeInsets.only(top: 20.0, left: 3.0),
+                                const EdgeInsets.only( left: 3.0),
                             child: Text('Privacy Policy',
                                 style: TextStyle(
                                     decoration: TextDecoration.underline,
-                                    color: Colors.grey[400])),
+                                    color: Color(0xff524A87)
+                                    )),
                           ),
                           onPressed: () {
                             _launchURL(
@@ -425,7 +390,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text('and the',
-                          style: TextStyle(color: Colors.grey[400])),
+                          style: TextStyle(color: Color(0xff524A87)
+                          )),
                       RawMaterialButton(
                           child: Padding(
                             padding: const EdgeInsets.only(
@@ -433,14 +399,16 @@ class _LoginScreenState extends State<LoginScreen> {
                             child: Text('Terms and Conditions',
                                 style: TextStyle(
                                     decoration: TextDecoration.underline,
-                                    color: Colors.grey[400])),
+                                    color: Color(0xff524A87)
+                                    )),
                           ),
                           onPressed: () {
                             _launchURL(
                                 'https://www.websitepolicies.com/policies/view/hPUxad33');
                           }),
                       Text('of Memender.',
-                          style: TextStyle(color: Colors.grey[400]))
+                          style: TextStyle(color: Color(0xff524A87)
+                          ))
                     ],
                   )
                 ],
@@ -453,6 +421,8 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget _signInButtonFacebook() {
     return RawMaterialButton(
       onPressed: () {
+        if (policyAccepted == true) {
+
         signInWithFacebook().whenComplete(() {
           FirebaseAuth.instance.currentUser().then((firebaseUser) {
             if (firebaseUser != null) {
@@ -467,6 +437,11 @@ class _LoginScreenState extends State<LoginScreen> {
             }
           });
         });
+        } else {
+          setState(() {
+            isVisible = true;
+          });
+        }
       },
       fillColor: Colors.white,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
@@ -503,20 +478,27 @@ class _LoginScreenState extends State<LoginScreen> {
     return RawMaterialButton(
       splashColor: Colors.grey,
       onPressed: () {
-        signInWithGoogle().whenComplete(() {
-          FirebaseAuth.instance.currentUser().then((firebaseUser) {
-            if (firebaseUser != null) {
-              print("Is it me ???");
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) {
-                    return Home();
-                  },
-                ),
-              );
-            }
+        if (policyAccepted == true) {
+          signInWithGoogle().whenComplete(() {
+            FirebaseAuth.instance.currentUser().then((firebaseUser) {
+              if (firebaseUser != null) {
+                print("Is it me ???");
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return Home();
+                    },
+                  ),
+                );
+              }
+            });
           });
-        });
+        } else {
+          setState(() {
+            isVisible = true;
+          });
+        }
+
       },
       fillColor: Colors.white,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
