@@ -43,7 +43,7 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
           return Container(
             padding: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.04),
             child: IconButton(
-              icon:  Icon(Icons.info_outline, color: kHighlightColor, size: 28.0),
+              icon:  Icon(Icons.help_outline, color: kHighlightColor, size: 28.0),
               splashColor: kOpacityColor,
               highlightColor: kOpacityColor,
               onPressed: () {

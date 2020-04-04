@@ -85,14 +85,10 @@ class _HomeState extends State<Home> {
     var image = await ImagePicker.pickImage(source: ImageSource.gallery);
     var uuid = new Uuid();
     var id = uuid.v1();
-   
-  
-            setState(() {
+    setState(() {
       _image = image;
       print('got it');
     });
-    
-
     final StorageReference storageReference =
         FirebaseStorage.instance.ref().child('images/').child('$id');
     final StorageUploadTask uploadTask = storageReference.putFile(_image);

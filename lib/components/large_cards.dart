@@ -37,6 +37,8 @@ class _CardSwiperState extends State<CardSwiper> {
   double opacityLeftNum = 0;
   double opacityRightNum = 0;
 
+  List currentUserHasReportedUsers;
+
   String deviceID;
 
   final FirebaseAuth auth = FirebaseAuth.instance;
@@ -49,8 +51,9 @@ class _CardSwiperState extends State<CardSwiper> {
     //     Firestore.instance.collection('users').document(uid);
     setState(() {
       userId = uid;
-      testData();
     });
+      testData();
+
     // here you write the codes to input the data into firestore
   }
 
@@ -58,13 +61,36 @@ class _CardSwiperState extends State<CardSwiper> {
   Future testData() async {
     print('userId');
     print(userId);
+    await Firestore.instance.collection('users').document(userId).get().then((user) {
+      print('here lies the user');
+      print(user['UserReported']);
+      setState(() {
+        if (user['UserReported'] == null) {
+          currentUserHasReportedUsers = [];
+        } else {
+          currentUserHasReportedUsers = user['UserReported'];
+
+        }
+      });
+    });
     Firestore.instance.collection('memes').snapshots().listen((data) => {
           data.documents.shuffle(),
-          data.documents.forEach((doc) => {
-                (doc['usersHasSeen'].contains(userId))
-                    ? print('i am')
-                    : goodDocs.add(doc),
-              })
+
+          for ( var i = 10; i >- 1; i--) {
+            print('getting more'),
+            data.documents[i]['usersHasSeen'].contains(userId) || data.documents[i]['reported'] == true || currentUserHasReportedUsers.contains(data.documents[i]['userId']) ? null : 
+            setState(() {
+            goodDocs.add(data.documents[i]);
+
+            })
+          }
+
+          // data.documents.forEach((doc) => {
+          //       doc['usersHasSeen'].contains(userId) || doc['reported'] == true || currentUserHasReportedUsers.contains(doc['userId']) == true
+          //           ? null
+          //           : goodDocs.add(doc),
+          //     }),
+         
         });
   }
 
@@ -72,6 +98,7 @@ class _CardSwiperState extends State<CardSwiper> {
 
   voting(orientation, doc) async {
     print('VOTINg');
+    print(doc['memeId']);
     String memeToVote = '';
     DocumentReference postRef = null;
     Firestore.instance
@@ -124,14 +151,14 @@ class _CardSwiperState extends State<CardSwiper> {
   }
 
   saveMeme(document) async {
-    try {
-      var imageId = await ImageDownloader.downloadImage(document['url']);
-      if (imageId == null) {
-        return;
-      }
-    } on PlatformException catch (error) {
-      print(error);
-    }
+    // try {
+    //   var imageId = await ImageDownloader.downloadImage(document['url']);
+    //   if (imageId == null) {
+    //     return;
+    //   }
+    // } on PlatformException catch (error) {
+    //   print(error);
+    // }
 
     Firestore.instance
         .collection('memes')
@@ -182,6 +209,185 @@ class _CardSwiperState extends State<CardSwiper> {
     _interstitialAd?.show();
   }
 
+  openModalReport(badMeme) {
+      showDialog(
+        context: context,
+        builder: (dialogContex) {
+          return Dialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20)
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(25.0),
+              child: SingleChildScrollView(
+                child: ConstrainedBox(
+                        constraints: BoxConstraints(),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    Text(
+                                      'Report this image if you think it should be deleted. I will put it in the trash myself.',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontFamily: 'Lato',
+                                        fontSize: 17.0
+                                      ),
+                                    ),
+                                  
+                                    SizedBox(height: 15.0,),
+                                     RawMaterialButton(
+                                        fillColor: Colors.red,
+                                          shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(40)
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(left: 15.0, right: 15.0),
+                                          child: Text('Report This Image',
+                                          style: TextStyle(color: kWhite),),
+                                        ),
+                                        onPressed: () {
+                                          reportMeme(badMeme);
+                                        },
+                                        ),
+                                    SizedBox(height: 15.0,),
+                                        
+                                    
+                                    Text(
+                                      'Report this image and block this user. You will not see any of this user images anymore.',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                      fontFamily: 'Lato',
+                                      fontSize: 17.0,
+                                      
+                                      ),
+                                    ),
+                                    SizedBox(height: 15.0,),
+
+                                  RawMaterialButton(
+                                        fillColor: Colors.red,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(40)
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(left: 15.0, right: 15.0),
+                                          child: Text('Block This User', style: TextStyle(color: kWhite)),
+                                        ),
+                                        onPressed: () {
+                                          reportUser(badMeme);
+                                        },
+                                        ),
+                                    SizedBox(height: 15.0,),
+
+                                    
+                                    Text(
+                                      "For any image reported or User blocked I will investigate the user, and banish him from this lil meme paradise if I judge it necessary.",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                      fontFamily: 'Lato',
+                                      fontSize: 17.0
+                                      ),
+                                      )
+                                  ],
+                                ),
+                )
+                              
+              ),
+            )
+          );
+        }
+      );
+  }
+
+  reportUser(badMeme) {
+    reportMeme(badMeme);
+    print('bad user id');
+    print(badMeme['userId']);
+    print('current user');
+    print(userId);
+    DocumentReference postRef;
+    String userToReport;
+
+    Firestore.instance
+    .collection('users')
+    .where('uid', isEqualTo: userId)
+    .snapshots()
+    .listen((data) => {
+          userToReport = badMeme['userId'],
+          postRef =
+              Firestore.instance.collection('users').document(userId)
+        });
+
+    Firestore.instance.runTransaction((Transaction tx) async {
+        DocumentSnapshot postSnapshot = await tx.get(postRef);
+        if (postSnapshot.exists) {
+          await tx.update(postRef, {
+            'UserReported': FieldValue.arrayUnion([userId])
+          });
+        } else {
+          print('something stings');
+        }
+      });
+
+
+
+    setState(() {
+      goodDocs = [];
+    });
+      testData();
+
+    Navigator.pop(context);
+            Flushbar(
+        flushbarPosition: FlushbarPosition.TOP,
+        title: "Thank you for keeping the street clean !!",
+        message: "You are now part of the Memender Patrol 🚓",
+        duration: Duration(seconds: 5),
+        backgroundGradient:
+            LinearGradient(colors: [Color(0xFFFF6996), Color(0xFF524A87)]))
+      ..show(context);
+  }
+
+  reportMeme(badMeme) {
+    print(badMeme['memeId']);
+    DocumentReference postRef;
+    String memeToReport;
+
+
+    Firestore.instance
+    .collection('memes')
+    .where('name', isEqualTo: badMeme['name'])
+    .snapshots()
+    .listen((data) => {
+          memeToReport = badMeme['memeId'],
+          postRef =
+              Firestore.instance.collection('memes').document(memeToReport)
+        });
+
+    Firestore.instance.runTransaction((Transaction tx) async {
+        DocumentSnapshot postSnapshot = await tx.get(postRef);
+        if (postSnapshot.exists) {
+          await tx.update(postRef, {
+            'reported': true
+          });
+        } else {
+          print('something stings');
+        }
+      });
+          setState(() {
+      goodDocs = [];
+    });
+      testData();
+
+    Navigator.pop(context);
+            Flushbar(
+        flushbarPosition: FlushbarPosition.TOP,
+        title: "Thank you for keeping the street clean !!",
+        message: "You are now part of the Memender Patrol 🚓",
+        duration: Duration(seconds: 5),
+        backgroundGradient:
+            LinearGradient(colors: [Color(0xFFFF6996), Color(0xFF524A87)]))
+      ..show(context);
+  }
+
   @override
   void initState() {
     super.initState();
@@ -201,19 +407,10 @@ class _CardSwiperState extends State<CardSwiper> {
   @override
   Widget build(BuildContext context) {
     CardController controller;
-    return Stack(
+    if (goodDocs.length > 1) {
+return Stack(
       children: <Widget>[
-        StreamBuilder(
-            stream: Firestore.instance.collection('memes').limit(1).snapshots(),
-            builder: (context, snapshot) {
-              if (goodDocs.length == 0)
-                return const Center(
-                  child: CircularProgressIndicator(
-                      valueColor:
-                          AlwaysStoppedAnimation<Color>(Color(0xFFCFB4F1))),
-                );
-
-              return Container(
+             Container(
                 margin: EdgeInsets.only(
                     bottom: MediaQuery.of(context).size.height * 0.03),
                 child: TinderSwapCard(
@@ -232,8 +429,23 @@ class _CardSwiperState extends State<CardSwiper> {
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: <Widget>[
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
+
+                                  RawMaterialButton(
+                                    onPressed: () {
+                                      openModalReport(goodDocs[index]);
+                                    },
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(top: 8.0, right: 30.0),
+                                      child: Icon(
+                                        Icons.error_outline,
+                                        color: kHighlightColor,
+                                        
+                                      ),
+                                      )
+                                  ),
+                                    
                                   RawMaterialButton(
                                       onPressed: () {
                                         saveMeme(goodDocs[index]);
@@ -381,8 +593,8 @@ class _CardSwiperState extends State<CardSwiper> {
                       });
                       voting(orientation, goodDocs[index]);
                     }),
-              );
-            }),
+              ),
+            
         Positioned(
           bottom: 0.0,
           child: Container(
@@ -409,14 +621,14 @@ class _CardSwiperState extends State<CardSwiper> {
                 padding: EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
                 decoration: BoxDecoration(
                   border: Border.all(
-                    color: kPink,
+                    color: Colors.green,
                   ),
                   borderRadius: BorderRadius.all(Radius.circular(5.0)),
                 ),
                 transform: Matrix4.rotationZ(-0.3),
                 child: Text('LIKE',
                     style: TextStyle(
-                        color: kPink, fontSize: 16.0, fontFamily: 'Lato')),
+                        color: Colors.green, fontSize: 16.0, fontFamily: 'Lato', fontWeight: FontWeight.bold )),
               ),
             )),
         AnimatedOpacity(
@@ -428,7 +640,7 @@ class _CardSwiperState extends State<CardSwiper> {
                   left: MediaQuery.of(context).size.width * 0.75),
               padding: EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
               decoration: BoxDecoration(
-                border: Border.all(color: kBlue),
+                border: Border.all(color: Colors.red),
                 borderRadius: BorderRadius.all(
                   Radius.circular(5.0),
                 ),
@@ -436,10 +648,18 @@ class _CardSwiperState extends State<CardSwiper> {
               transform: Matrix4.rotationZ(0.3),
               child: Text('DISLIKE',
                   style: TextStyle(
-                      color: kBlue, fontSize: 16.0, fontFamily: 'Lato')),
+                      color: Colors.red, fontSize: 16.0, fontFamily: 'Lato', fontWeight: FontWeight.bold)),
             ))
         // : SizedBox()
       ],
     );
-  }
+    } else {
+           return Center(
+                  child: CircularProgressIndicator(
+                      valueColor:
+                          AlwaysStoppedAnimation<Color>(Color(0xFFCFB4F1))),
+                );
+    }
+    
+  } 
 }

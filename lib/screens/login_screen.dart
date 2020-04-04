@@ -28,32 +28,42 @@ class _LoginScreenState extends State<LoginScreen> {
   final FirebaseAuth auth = FirebaseAuth.instance;
 
   String _email, _password;
+  String errorMessage = 'Password must be of at least 6 character';
+  bool errorShowing = false;
 
   Future<FirebaseUser> handleLogInEmail(String email, String password) async {
+    try {
     AuthResult result =
         await auth.signInWithEmailAndPassword(email: email, password: password);
-    final FirebaseUser user = result.user;
-    assert(user != null);
-    assert(await user.getIdToken() != null);
 
-    final FirebaseUser currentUser = await auth.currentUser();
-    assert(user.uid == currentUser.uid);
+        final FirebaseUser user = result.user;
+        assert(user != null);
+        assert(await user.getIdToken() != null);
+        final FirebaseUser currentUser = await auth.currentUser();
+        assert(user.uid == currentUser.uid);
+    } catch (error) {
+     print(error);
+    }
 
-    print('signInEmail succeeded');
+
+
+
   }
 
   Future<FirebaseUser> handleSignInEmail(String email, String password) async {
-    AuthResult result = await auth.createUserWithEmailAndPassword(
-        email: email, password: password);
-    final FirebaseUser user = result.user;
-    assert(user != null);
-    assert(await user.getIdToken() != null);
+    
+   try {
+  AuthResult result = await auth.createUserWithEmailAndPassword(
+          email: email, password: password);
+      final FirebaseUser user = result.user;
+      assert(user != null);
+      assert(await user.getIdToken() != null);
+   } catch(error) {
+      print(error);
 
-    final FirebaseUser currentUser = await auth.currentUser();
-    assert(user.uid == currentUser.uid);
-
-    print('signInEmail succeeded');
+   }
   }
+
 
   _launchURL(url) async {
     if (await canLaunch(url)) {
@@ -74,142 +84,155 @@ class _LoginScreenState extends State<LoginScreen> {
                   borderRadius: BorderRadius.circular(20)),
               child: SingleChildScrollView(
                 child: Container(
-                    height: MediaQuery.of(dialogContex).size.height * 0.5,
-                    margin: EdgeInsets.all(8.0),
-                    child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Container(
-                            padding: EdgeInsets.all(10.0),
-                            child: TextField(
-                              style: TextStyle(
-                                  fontFamily: 'Lato', color: kHighlightColor),
-                              autocorrect: false,
-                              decoration: InputDecoration(
-                                  focusColor: Colors.pink,
-                                  hintText: "Email",
-                                  hintStyle: TextStyle(color: Colors.grey[400]),
-                                  enabledBorder: UnderlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Colors.grey[400])),
-                                  focusedBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: kHighlightColor, width: 2.0)),
-                                  border: UnderlineInputBorder()),
-                              onChanged: (value) {
-                                localEmail = value;
-                              },
-                            ),
-                          ),
-                          Container(
-                            margin: EdgeInsets.all(10.0),
-                            child: TextField(
-                              style: TextStyle(
-                                  fontFamily: 'Lato', color: kHighlightColor),
-                              autocorrect: false,
-                              obscureText: true,
-                              decoration: InputDecoration(
-                                  enabledBorder: UnderlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Colors.grey[400])),
-                                  focusedBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: kHighlightColor, width: 2.0)),
-                                  hintText: "Password",
-                                  hintStyle: TextStyle(color: Colors.grey[400]),
-                                  border: UnderlineInputBorder()),
-                              onChanged: (value) {
-                                localPassword = value;
-                              },
-                            ),
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(top: 0.0, bottom: 0.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Container(
-                                  padding:
-                                      EdgeInsets.only(left: 10.0, right: 10.0),
-                                  height: 37.0,
-                                  margin: EdgeInsets.only(right: 15.0),
-                                  decoration: BoxDecoration(
-                                    boxShadow: [
-                                      BoxShadow(
-                                          color: Colors.grey[400],
-                                          blurRadius: 1.0,
-                                          offset: Offset(1, 1))
-                                    ],
-                                    borderRadius: BorderRadius.circular(40),
-                                    gradient: LinearGradient(colors: <Color>[
-                                      Color(0xffFF6996),
-                                      Color(0xff524A87)
-                                    ]),
+                height: MediaQuery.of(dialogContex).size.height * 0.5,
+                margin: EdgeInsets.all(8.0),
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Container(
+                        padding: EdgeInsets.all(10.0),
+                        child: TextField(
+                          style: TextStyle(
+                              fontFamily: 'Lato', color: kHighlightColor),
+                          autocorrect: false,
+                          decoration: InputDecoration(
+                              focusColor: Colors.pink,
+                              hintText: "Email",
+                              hintStyle: TextStyle(color: Colors.grey[400]),
+                              enabledBorder: UnderlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: Colors.grey[400])),
+                              focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: kHighlightColor, width: 2.0)),
+                              border: UnderlineInputBorder()),
+                          onChanged: (value) {
+                            localEmail = value;
+                          },
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.all(10.0),
+                        child: TextField(
+                          style: TextStyle(
+                              fontFamily: 'Lato', color: kHighlightColor),
+                          autocorrect: false,
+                          obscureText: true,
+                          decoration: InputDecoration(
+                              enabledBorder: UnderlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: Colors.grey[400])),
+                              focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: kHighlightColor, width: 2.0)),
+                              hintText: "Password",
+                              hintStyle: TextStyle(color: Colors.grey[400]),
+                              border: UnderlineInputBorder()),
+                          onChanged: (value) {
+                            localPassword = value;
+                          },
+                        ),
+                      ),
+                      Visibility(
+                        visible: errorShowing,
+                        child: Text(
+                          errorMessage
+                        ),
+                        ),
+                      Container(
+                        margin: EdgeInsets.only(top: 0.0, bottom: 0.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Container(
+                              padding:
+                                  EdgeInsets.only(left: 10.0, right: 10.0),
+                              height: 37.0,
+                              margin: EdgeInsets.only(right: 15.0),
+                              decoration: BoxDecoration(
+                                boxShadow: [
+                                  BoxShadow(
+                                      color: Colors.grey[400],
+                                      blurRadius: 1.0,
+                                      offset: Offset(1, 1))
+                                ],
+                                borderRadius: BorderRadius.circular(40),
+                                gradient: LinearGradient(colors: <Color>[
+                                  Color(0xffFF6996),
+                                  Color(0xff524A87)
+                                ]),
 
-                                    // color: Color(0xffFF6996)
-                                  ),
-                                  child: RawMaterialButton(
-                                    child: Text(
-                                      'Create account',
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontFamily: 'Lato',
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    onPressed: () {
-                                      handleSignInEmail(
-                                              localEmail, localPassword)
-                                          .whenComplete(() => {
-                                                FirebaseAuth.instance
-                                                    .currentUser()
-                                                    .then((firebaseUser) {
-                                                  if (firebaseUser != null) {
-                                                    Navigator.pop(dialogContex);
-                                                    Navigator.of(context).push(
-                                                      MaterialPageRoute(
-                                                        builder: (context) {
-                                                          return Home();
-                                                        },
-                                                      ),
-                                                    );
-                                                  }
-                                                })
-                                              });
-                                    },
-                                  ),
+                                // color: Color(0xffFF6996)
+                              ),
+                              child: RawMaterialButton(
+                                child: Text(
+                                  'Create account',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontFamily: 'Lato',
+                                      fontWeight: FontWeight.bold),
                                 ),
-                                RawMaterialButton(
-                                  fillColor: kWhite,
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(40)),
-                                  child: Text('Log in',
-                                      style: TextStyle(
-                                          fontFamily: 'Lato',
-                                          fontWeight: FontWeight.bold)),
-                                  onPressed: () {
-                                    handleLogInEmail(localEmail, localPassword)
-                                        .whenComplete(() => {
-                                              FirebaseAuth.instance
-                                                  .currentUser()
-                                                  .then((firebaseUser) {
-                                                if (firebaseUser != null) {
-                                                  Navigator.pop(dialogContex);
-                                                  Navigator.of(context).push(
-                                                    MaterialPageRoute(
-                                                      builder: (context) {
-                                                        return Home();
-                                                      },
-                                                    ),
-                                                  );
-                                                }
-                                              })
-                                            });
-                                  },
-                                ),
-                              ],
+                                onPressed: () {
+                                  if (localPassword.length > 5) {
+                                  handleSignInEmail(
+                                          localEmail, localPassword)
+                                      .whenComplete(() => {
+                                            FirebaseAuth.instance
+                                                .currentUser()
+                                                .then((firebaseUser) {
+                                              if (firebaseUser != null) {
+                                                Navigator.pop(dialogContex);
+                                                Navigator.of(context).push(
+                                                  MaterialPageRoute(
+                                                    builder: (context) {
+                                                      return Home();
+                                                    },
+                                                  ),
+                                                );
+                                              } 
+                                            })
+                                          });
+                                  } else {
+                                    AlertDialog(
+                                      content: Text('check again')
+                                    );
+                                  }
+
+                                },
+                              ),
                             ),
-                          )
-                        ])),
+                            RawMaterialButton(
+                              fillColor: kWhite,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(40)),
+                              child: Text('Log in',
+                                  style: TextStyle(
+                                      fontFamily: 'Lato',
+                                      fontWeight: FontWeight.bold)),
+                              onPressed: () {
+                                handleLogInEmail(localEmail, localPassword)
+                                    .whenComplete(() => {
+                                          FirebaseAuth.instance
+                                              .currentUser()
+                                              .then((firebaseUser) {
+                                            if (firebaseUser != null) {
+                                              Navigator.pop(dialogContex);
+                                              Navigator.of(context).push(
+                                                MaterialPageRoute(
+                                                  builder: (context) {
+                                                    return Home();
+                                                  },
+                                                ),
+                                              );
+                                            }
+                                          })
+                                        });
+                              },
+                            ),
+                          ],
+                        ),
+                      )
+                    ])),
               ));
         });
   }
@@ -221,6 +244,10 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() {
       policyAccepted = newValue;
     });
+  }
+  @override
+  void initState() {
+    super.initState();
   }
 
   @override
@@ -360,12 +387,16 @@ class _LoginScreenState extends State<LoginScreen> {
                       Checkbox(
                         value: policyAccepted,
                         onChanged: _policyChecked,
+                        activeColor: Color(0xff524A87),
+                        
                       ),
 
 
                       Text(
                         "By signing in, you accept the",
-                        style: TextStyle(color: Color(0xff524A87)),
+                        style: TextStyle(
+                          color: Color(0xff524A87),
+                          fontSize: 13.0),
                       ),
                       RawMaterialButton(
                           materialTapTargetSize:
@@ -376,7 +407,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             child: Text('Privacy Policy',
                                 style: TextStyle(
                                     decoration: TextDecoration.underline,
-                                    color: Color(0xff524A87)
+                                    color: Color(0xff524A87),
+                                    fontSize: 13.0
                                     )),
                           ),
                           onPressed: () {
@@ -390,16 +422,16 @@ class _LoginScreenState extends State<LoginScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text('and the',
-                          style: TextStyle(color: Color(0xff524A87)
+                          style: TextStyle(color: Color(0xff524A87), fontSize: 13.0
                           )),
                       RawMaterialButton(
                           child: Padding(
                             padding: const EdgeInsets.only(
-                                bottom: 33.0, left: 3.0, right: 3.0),
+                                bottom: 33.0, left: 10.0, right: 3.0),
                             child: Text('Terms and Conditions',
                                 style: TextStyle(
                                     decoration: TextDecoration.underline,
-                                    color: Color(0xff524A87)
+                                    color: Color(0xff524A87), fontSize: 13.0
                                     )),
                           ),
                           onPressed: () {
@@ -407,7 +439,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 'https://www.websitepolicies.com/policies/view/hPUxad33');
                           }),
                       Text('of Memender.',
-                          style: TextStyle(color: Color(0xff524A87)
+                          style: TextStyle(color: Color(0xff524A87), fontSize: 13.0
                           ))
                     ],
                   )

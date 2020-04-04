@@ -43,6 +43,7 @@ dependencies:
   rflutter_alert: ^1.0.3
   launch_review: ^2.0.0
   flutter_statusbar_text_color: ^0.1.2
+  mailer: ^3.0.4
 
 
 

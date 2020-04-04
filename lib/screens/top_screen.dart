@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import '../constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+
 import '../components/small_card.dart';
 
 class TopScreen extends StatelessWidget {
@@ -47,7 +50,59 @@ class TopList extends StatefulWidget {
 }
 
 class _TopListState extends State<TopList> {
+
+  String userId;
+  List currentUserHasReportedUsers = [];
+
+
+
+
+  String url;
+  final FirebaseAuth auth = FirebaseAuth.instance;
+ 
+
+    Future getUserRef() async {
+    final FirebaseUser user = await auth.currentUser();
+    final uid = user.uid;
+
+    setState(() {
+      userId = uid;
+    });
+    print(userId);
+    getReported();
+
+  }
+
+  Future getReported() async {
+    await Firestore.instance.collection('users').document(userId).get().then((user) {
+      print('from the llopp');
+      print(user);
+      print(user['UserReported']);
+      setState(() {
+        if (user['UserReported'] == null) {
+          currentUserHasReportedUsers = [];
+          print(currentUserHasReportedUsers);
+        } else {
+          currentUserHasReportedUsers = user['UserReported'];
+
+        }
+      });
+    });
+  }
+
+
+@override
+  void initState() {
+    super.initState();
+    getUserRef();
+  }
+
+
+
+
+
   @override
+  
   Widget build(BuildContext context) {
     final FirebaseStorage storage = FirebaseStorage(
         app: Firestore.instance.app,
@@ -62,7 +117,8 @@ class _TopListState extends State<TopList> {
       beginDate = DateTime.now().subtract(Duration(days: 7));
     }
 
-    return Stack(
+    if (currentUserHasReportedUsers.length >= 0) {
+          return Stack(
       children: <Widget>[
         StreamBuilder(
             stream:
@@ -82,6 +138,7 @@ class _TopListState extends State<TopList> {
                       valueColor:
                           AlwaysStoppedAnimation<Color>(Color(0xFFCFB4F1))),
                 );
+      
 
               if (widget.order == "Monthly favorites") {
                 snapshot.data.documents.forEach((doc) => {
@@ -90,7 +147,7 @@ class _TopListState extends State<TopList> {
                                       new DateTime.fromMicrosecondsSinceEpoch(
                                           doc['dateCreation'] * 1000))
                                   .inDays <=
-                              31)
+                              31) || currentUserHasReportedUsers.contains(doc['userId']) != false
                           ? memesSnapshot.add(doc)
                           : ''
                     });
@@ -101,20 +158,32 @@ class _TopListState extends State<TopList> {
                                       new DateTime.fromMicrosecondsSinceEpoch(
                                           doc['dateCreation'] * 1000))
                                   .inDays <=
-                              7)
+                              7) || currentUserHasReportedUsers.contains(doc['userId']) != true 
                           ? memesSnapshot.add(doc)
                           : ''
                     });
               } else {
-                memesSnapshot = snapshot.data.documents;
+
+                snapshot.data.documents.forEach((doc) => {
+                currentUserHasReportedUsers.contains(doc['userId'])  != true ?
+                memesSnapshot.add(doc) :
+                null
+                });
               }
+
+   
 
               return ListView.builder(
                 shrinkWrap: true,
                 itemCount: memesSnapshot.length,
                 itemBuilder: (BuildContext context, int i) =>
-                    SmallCardList(context, memesSnapshot[i], storage, 'top'),
+                    SmallCardList(context, memesSnapshot[i], storage, 'top')
+
+
               );
+        
+              
+
             }),
         Positioned(
           bottom: 0.0,
@@ -132,5 +201,14 @@ class _TopListState extends State<TopList> {
         )
       ],
     );
+    } else {
+     return Center(
+                  child: CircularProgressIndicator(
+                      valueColor:
+                          AlwaysStoppedAnimation<Color>(Color(0xFFCFB4F1))),
+                );
+    }
+
+
   }
 }
