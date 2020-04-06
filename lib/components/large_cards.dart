@@ -45,11 +45,16 @@ class _CardSwiperState extends State<CardSwiper> {
   String userId;
 
   Future getUserRef() async {
+    setState(() {
+      goodDocs= [];
+    });
     try {
     final FirebaseUser user = await auth.currentUser();
     final uid = user.uid;
         setState(() {
       userId = uid;
+      
+
     });
       testData();
     } catch(error) {
@@ -67,8 +72,7 @@ class _CardSwiperState extends State<CardSwiper> {
 
   //FUNCTION GETTING THE IMAGES.
   Future testData() async {
-    print('userId');
-    print(userId);
+    print(' ia am here');
     await Firestore.instance.collection('users').document(userId).get().then((user) {
       print('here lies the user');
       print(user['UserReported']);
@@ -81,16 +85,21 @@ class _CardSwiperState extends State<CardSwiper> {
         }
       });
     });
+
+    print('not here');
     Firestore.instance.collection('memes').snapshots().listen((data) => {
           data.documents.shuffle(),
+          if (goodDocs.length < 5) {
+            for ( var i = 200; i >- 1; i--) {
+              print('getting more'),
+              data.documents[i]['usersHasSeen'].contains(userId) || data.documents[i]['reported'] == true || currentUserHasReportedUsers.contains(data.documents[i]['userId']) ? null : 
+              setState(() {
+                if (goodDocs.length != 100) {
+                  goodDocs.add(data.documents[i]);
+                }
 
-          for ( var i = 10; i >- 1; i--) {
-            print('getting more'),
-            data.documents[i]['usersHasSeen'].contains(userId) || data.documents[i]['reported'] == true || currentUserHasReportedUsers.contains(data.documents[i]['userId']) ? null : 
-            setState(() {
-            goodDocs.add(data.documents[i]);
-
-            })
+              })
+            }
           }
 
           // data.documents.forEach((doc) => {
@@ -98,7 +107,7 @@ class _CardSwiperState extends State<CardSwiper> {
           //           ? null
           //           : goodDocs.add(doc),
           //     }),
-         
+      
         });
   }
 
