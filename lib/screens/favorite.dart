@@ -29,15 +29,31 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
   }
 
   String userId;
-  List userFavorite = [];
+  List userFavorites = [];
   inputData() async {
     final FirebaseUser user = await auth.currentUser();
     final uid = user.uid;
-    DocumentReference userRef =
-        Firestore.instance.collection('users').document(uid);
+    // DocumentReference userRef =
+    //     Firestore.instance.collection('users').document(uid);
     setState(() {
       userId = uid;
     });
+
+     Firestore.instance
+        .collection('users')
+        .document(userId)
+        .snapshots()
+        .listen((data) => {
+              setState(() {
+                userFavorites = data['favorite'];
+              }),
+          print(userFavorites),
+          print(data['favortie']),
+
+            });
+      
+      print(userFavorites);
+    
     // here you write the codes to input the data into firestore
   }
 

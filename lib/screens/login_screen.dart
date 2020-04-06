@@ -28,8 +28,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final FirebaseAuth auth = FirebaseAuth.instance;
 
   String _email, _password;
-  String errorMessage = 'Password must be of at least 6 character';
-  bool errorShowing = false;
+
 
   Future<FirebaseUser> handleLogInEmail(String email, String password) async {
     try {
@@ -60,7 +59,6 @@ class _LoginScreenState extends State<LoginScreen> {
       assert(await user.getIdToken() != null);
    } catch(error) {
       print(error);
-
    }
   }
 
@@ -74,12 +72,18 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   _onAlertLoginPressed() {
-    String localEmail = '';
-    String localPassword = '';
+          String localEmail = '';
+          String localPassword = '';
+
     showDialog(
         context: context,
         builder: (dialogContex) {
-          return Dialog(
+
+          String errorMessage = 'Password must be of at least 6 character';
+          bool errorShowing = false; 
+          return StatefulBuilder(
+            builder: (context, setState) {
+                return Dialog(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20)),
               child: SingleChildScrollView(
@@ -107,7 +111,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                       color: kHighlightColor, width: 2.0)),
                               border: UnderlineInputBorder()),
                           onChanged: (value) {
+
                             localEmail = value;
+                              
                           },
                         ),
                       ),
@@ -129,14 +135,17 @@ class _LoginScreenState extends State<LoginScreen> {
                               hintStyle: TextStyle(color: Colors.grey[400]),
                               border: UnderlineInputBorder()),
                           onChanged: (value) {
+              
                             localPassword = value;
+
                           },
                         ),
                       ),
                       Visibility(
                         visible: errorShowing,
                         child: Text(
-                          errorMessage
+                          errorMessage,
+                          style: TextStyle(color: Color(0xffFF6996)),
                         ),
                         ),
                       Container(
@@ -189,13 +198,21 @@ class _LoginScreenState extends State<LoginScreen> {
                                                     },
                                                   ),
                                                 );
-                                              } 
+                                              } else {
+                                                setState(() {
+                                                  errorMessage = "Check that the email entered is valid";
+                                                  errorShowing = true;
+                                                });
+                                              }
                                             })
                                           });
                                   } else {
-                                    AlertDialog(
-                                      content: Text('check again')
-                                    );
+                                    setState(() {
+                                      errorMessage = "Password must be of at least 6 characters";
+                                      errorShowing = true;
+                                    });
+
+                                    
                                   }
 
                                 },
@@ -224,6 +241,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                                   },
                                                 ),
                                               );
+                                            } else {
+                                              setState(() {
+                                                errorMessage = "*Email or Password invalide";
+                                                errorShowing = true;
+                                              });
                                             }
                                           })
                                         });
@@ -234,6 +256,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       )
                     ])),
               ));
+
+            }
+ 
+          );
         });
   }
 

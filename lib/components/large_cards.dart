@@ -160,12 +160,19 @@ class _CardSwiperState extends State<CardSwiper> {
     //   print(error);
     // }
 
-    Firestore.instance
-        .collection('memes')
-        .document(document['memeId'])
-        .updateData({
-      'usersHasFavorite': FieldValue.arrayUnion([userId])
-    });
+    // Firestore.instance
+    //     .collection('memes')
+    //     .document(document['memeId'])
+    //     .updateData({
+    //   'usersHasFavorite': FieldValue.arrayUnion([userId])
+    // });
+    print(userId);
+          Firestore.instance
+            .collection('users')
+            .document(userId)
+            .updateData({
+              'favorite': FieldValue.arrayUnion([document['memeId']])
+              });
 
     setState(() {
       bookmark = Icon(

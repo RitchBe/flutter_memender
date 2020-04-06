@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:share/share.dart';
+
 
 import 'package:flushbar/flushbar.dart';
 import 'flushbarsString.dart';
@@ -26,6 +28,10 @@ class _SmallCardListState extends State<SmallCardList> {
   final FirebaseAuth auth = FirebaseAuth.instance;
  
   String userId;
+    Icon bookmark = Icon(
+    Icons.star_border,
+    color: kHighlightColor,
+  );
 
 
 
@@ -251,6 +257,48 @@ class _SmallCardListState extends State<SmallCardList> {
       ..show(context);
   }
 
+    saveMeme(document) async {
+    // try {
+    //   var imageId = await ImageDownloader.downloadImage(document['url']);
+    //   if (imageId == null) {
+    //     return;
+    //   }
+    // } on PlatformException catch (error) {
+    //   print(error);
+    // }
+
+    Firestore.instance
+        .collection('memes')
+        .document(document['memeId'])
+        .updateData({
+      'usersHasFavorite': FieldValue.arrayUnion([userId])
+    });
+
+    setState(() {
+      bookmark = Icon(
+        Icons.star,
+        color: kHighlightColor,
+      );
+    });
+
+    var random = new Random();
+    int randomIndex = random.nextInt(favoriteFlush.length - 1);
+    print(randomIndex);
+    String title = favoriteFlush.keys.elementAt(randomIndex);
+    String message = favoriteFlush.values.elementAt(randomIndex);
+
+    Flushbar(
+        flushbarPosition: FlushbarPosition.TOP,
+        title: title,
+        message: message,
+        duration: Duration(seconds: 5),
+        backgroundGradient:
+            LinearGradient(colors: [Color(0xFFFF6996), Color(0xFF524A87)]))
+      ..show(context);
+
+    randomIndex = random.nextInt(favoriteFlush.length - 1);
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -258,13 +306,13 @@ class _SmallCardListState extends State<SmallCardList> {
         widget.document['reported'] != true ?
       Container(
           alignment: Alignment.center,
-          margin: EdgeInsets.fromLTRB(20.0, 5.0, 20.0, 5.0),
+          margin: EdgeInsets.fromLTRB(5.0, 5.0, 5.0, 5.0),
           child: Container(
               height: MediaQuery.of(context).size.height * 0.45,
-              width: MediaQuery.of(context).size.width * 0.85,
+              width: MediaQuery.of(context).size.width * 0.90,
               padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
               child: Container(
-                padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
+               
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(4.0)),
                     color: kWhite,
@@ -282,14 +330,15 @@ class _SmallCardListState extends State<SmallCardList> {
 
                     widget.method == 'top' 
                     ? Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween, 
+                      mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
                         RawMaterialButton(
                                     onPressed: () {
                                       openModalReport(widget.document);
                                     },
                                     child: Padding(
-                                      padding: const EdgeInsets.only(top: 8.0, right: 30.0),
+                                      padding: const EdgeInsets.only(top: 8.0),
                                       child: Icon(
                                         Icons.error_outline,
                                         color: kHighlightColor,
@@ -297,6 +346,34 @@ class _SmallCardListState extends State<SmallCardList> {
                                       ),
                                       )
                                   ),
+                          RawMaterialButton(
+                                    onPressed: () {
+                                      saveMeme(widget.document);
+                                      },
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(top: 8.0),
+                                        child:  bookmark
+                                      )
+                                    ),
+                            RawMaterialButton(
+                                    child: Row(
+                                      children: <Widget>[
+                                        Padding(
+                                          padding: const EdgeInsets.only(top: 8.0),
+                                          child: Icon(
+                                            Icons.share,
+                                            color: Color(0xFFF9C9BA),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    onPressed: () {
+                                      Share.share(widget.document['url'] +
+                                          ' ' +
+                                          "Send with Memender");
+                                    },
+                                  ),
+
                       ],
                     ) 
                     : SizedBox(),
