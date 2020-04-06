@@ -39,20 +39,28 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
       userId = uid;
     });
 
-     Firestore.instance
-        .collection('users')
-        .document(userId)
-        .snapshots()
-        .listen((data) => {
-              setState(() {
-                userFavorites = data['favorite'];
-              }),
-          print(userFavorites),
-          print(data['favortie']),
+    //  Firestore.instance
+    //     .collection('users')
+    //     .document(userId)
+    //     .snapshots()
+    //     .listen((data) => {
+    //       //     setState(() {
+    //       //       userFavorites = data['favorite'];
+    //       //     }),
+    //       // print(userFavorites),
+    //       data['favorite'].forEach((doc) {
+    //         print(doc);
+    //         print('here');
+    //         print(doc['memeId']);
+    //         setState(() {
+    //         userFavorites.add(doc);
 
-            });
+    //         });
+    //       })
+
+    //         });
       
-      print(userFavorites);
+    
     
     // here you write the codes to input the data into firestore
   }
@@ -66,7 +74,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
       height: MediaQuery.of(context).size.height * 1,
       child: Stack(
         children: <Widget>[
-          StreamBuilder(
+          StreamBuilder(  
               stream: Firestore.instance
                   .collection('memes')
                   .where('usersHasFavorite', arrayContains: userId)

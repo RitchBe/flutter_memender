@@ -31,7 +31,7 @@ class _CardSwiperState extends State<CardSwiper> {
   bool hasBeenShuffle = false;
   List<DocumentSnapshot> documents = [];
 
-  int countForAds = 0;
+  // int countForAds = 0;
   bool swipingLike = false;
   bool swipingDislike = false;
   double opacityLeftNum = 0;
@@ -45,14 +45,22 @@ class _CardSwiperState extends State<CardSwiper> {
   String userId;
 
   Future getUserRef() async {
+    try {
     final FirebaseUser user = await auth.currentUser();
     final uid = user.uid;
-    // DocumentReference userRef =
-    //     Firestore.instance.collection('users').document(uid);
-    setState(() {
+        setState(() {
       userId = uid;
     });
       testData();
+    } catch(error) {
+      print(error);
+      print('here is the error');
+    }
+
+    // DocumentReference userRef =
+    //     Firestore.instance.collection('users').document(uid);
+
+
 
     // here you write the codes to input the data into firestore
   }
@@ -97,6 +105,8 @@ class _CardSwiperState extends State<CardSwiper> {
   List<String> urls = [];
 
   voting(orientation, doc) async {
+            print(goodDocs.length);
+
     print('VOTINg');
     print(doc['memeId']);
     String memeToVote = '';
@@ -137,13 +147,13 @@ class _CardSwiperState extends State<CardSwiper> {
       });
     }
     
-    setState(() {
-      countForAds++;
-    });
+    // setState(() {
+    //   countForAds++;
+    // });
 
-    if (countForAds % 20 == 0) {
-      loadAndShowAds();
-    }
+    // if (countForAds % 20 == 0) {
+    //   loadAndShowAds();
+    // }
 
     // var list = List();
     // list.add('test');
@@ -160,19 +170,19 @@ class _CardSwiperState extends State<CardSwiper> {
     //   print(error);
     // }
 
-    // Firestore.instance
-    //     .collection('memes')
-    //     .document(document['memeId'])
-    //     .updateData({
-    //   'usersHasFavorite': FieldValue.arrayUnion([userId])
-    // });
-    print(userId);
-          Firestore.instance
-            .collection('users')
-            .document(userId)
-            .updateData({
-              'favorite': FieldValue.arrayUnion([document['memeId']])
-              });
+    Firestore.instance
+        .collection('memes')
+        .document(document['memeId'])
+        .updateData({
+      'usersHasFavorite': FieldValue.arrayUnion([userId])
+    });
+    // print(userId);
+    //       Firestore.instance
+    //         .collection('users')
+    //         .document(userId)
+    //         .updateData({
+    //           'favorite': FieldValue.arrayUnion([document['memeId']])
+    //           });
 
     setState(() {
       bookmark = Icon(
@@ -199,22 +209,22 @@ class _CardSwiperState extends State<CardSwiper> {
     randomIndex = random.nextInt(favoriteFlush.length - 1);
   }
 
-  final MobileAdTargetingInfo targetingInfo = MobileAdTargetingInfo();
+  // final MobileAdTargetingInfo targetingInfo = MobileAdTargetingInfo();
 
-  InterstitialAd _interstitialAd;
-  InterstitialAd createInterstitialAd() {
-    return InterstitialAd(
-        adUnitId: 'ca-app-pub-1373918645012713/5272851675',
-        listener: (MobileAdEvent event) {
-          print('Interstitial ad even $event');
-        });
-  }
+  // InterstitialAd _interstitialAd;
+  // InterstitialAd createInterstitialAd() {
+  //   return InterstitialAd(
+  //       adUnitId: 'ca-app-pub-1373918645012713/5272851675',
+  //       listener: (MobileAdEvent event) {
+  //         print('Interstitial ad even $event');
+  //       });
+  // }
 
-  loadAndShowAds() {
-    _interstitialAd?.dispose();
-    _interstitialAd = createInterstitialAd()..load();
-    _interstitialAd?.show();
-  }
+  // loadAndShowAds() {
+  //   _interstitialAd?.dispose();
+  //   _interstitialAd = createInterstitialAd()..load();
+  //   _interstitialAd?.show();
+  // }
 
   openModalReport(badMeme) {
       showDialog(
@@ -398,6 +408,7 @@ class _CardSwiperState extends State<CardSwiper> {
   @override
   void initState() {
     super.initState();
+    print('in the init state actually');
     getUserRef();
     // testData();
 
@@ -405,16 +416,16 @@ class _CardSwiperState extends State<CardSwiper> {
         .initialize(appId: 'ca-app-pub-1373918645012713~9842652074');
   }
 
-  @override
-  void dispose() {
-    _interstitialAd?.dispose();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  // _interstitialAd?.dispose();
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
     CardController controller;
-    if (goodDocs.length > 1) {
+    if (goodDocs.length > 5) {
 return Stack(
       children: <Widget>[
              Container(
