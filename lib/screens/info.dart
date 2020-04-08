@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:memender/constants.dart';
 
 import '../services/sign_in.dart';
 
@@ -90,12 +91,14 @@ class InfoContent extends StatelessWidget {
           
         children: <Widget>[
             Container(
-                
+                constraints: BoxConstraints(
+                  minHeight: MediaQuery.of(context).size.height * 1
+                ),
                 decoration: BoxDecoration(
                     gradient: LinearGradient(
                         begin: Alignment.bottomLeft,
                         end: Alignment.topRight,
-                        colors: [Color(0xFFFF6996), Color(0xFF524A87)])),
+                        colors: [Color(0xffFF6996), Color(0xFF524A87)])),
                 child: Container(
                   child: Column(
                     children: <Widget>[

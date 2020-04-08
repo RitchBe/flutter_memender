@@ -33,6 +33,12 @@ class _SmallCardListState extends State<SmallCardList> {
     color: kHighlightColor,
   );
 
+  Color unvoteBad = kBackgroundColor;
+  Color unvoteBadText = kBackgroundColor;
+
+  Color unvoteGoodText = kBackgroundColor;
+  Color unvoteGood = kBackgroundColor;
+
 
 
     Future getUserRef() async {
@@ -68,6 +74,7 @@ class _SmallCardListState extends State<SmallCardList> {
     int randomIndex = random.nextInt(deletedFlush.length - 1);
     String title = deletedFlush.keys.elementAt(randomIndex);
     String message = deletedFlush.values.elementAt(randomIndex);
+
     Flushbar(
         flushbarPosition: FlushbarPosition.BOTTOM,
         title: title,
@@ -297,8 +304,60 @@ class _SmallCardListState extends State<SmallCardList> {
       ..show(context);
 
     randomIndex = random.nextInt(favoriteFlush.length - 1);
-  }
+}
 
+upVote(document) {
+    String memeToVote = '';
+  DocumentReference postRef = null;
+    Firestore.instance
+        .collection('memes')
+        .where('name', isEqualTo: document['name'])
+        .snapshots()
+        .listen((data) => {
+              memeToVote = document['memeId'],
+              postRef =
+                  Firestore.instance.collection('memes').document(memeToVote)
+            });
+
+
+      Firestore.instance.runTransaction((Transaction tx) async {
+        DocumentSnapshot postSnapshot = await tx.get(postRef);
+        if (postSnapshot.exists) {
+          await tx.update(postRef, <String, dynamic>{
+            'upvote': postSnapshot.data['upvote'] + 1,
+            'total': postSnapshot.data['total'] + 1,
+            'usersHasSeen': FieldValue.arrayUnion([userId])
+          });
+        }
+      });
+}
+
+
+downVote(document) {
+    String memeToVote = '';
+  DocumentReference postRef = null;
+    Firestore.instance
+        .collection('memes')
+        .where('name', isEqualTo: document['name'])
+        .snapshots()
+        .listen((data) => {
+              memeToVote = document['memeId'],
+              postRef =
+                  Firestore.instance.collection('memes').document(memeToVote)
+            });
+
+
+      Firestore.instance.runTransaction((Transaction tx) async {
+        DocumentSnapshot postSnapshot = await tx.get(postRef);
+        if (postSnapshot.exists) {
+          await tx.update(postRef, <String, dynamic>{
+            'downvote': postSnapshot.data['upvote'] + 1,
+            'total': postSnapshot.data['total'] + 1,
+            'usersHasSeen': FieldValue.arrayUnion([userId])
+          });
+        }
+      });
+}
 
   @override
   Widget build(BuildContext context) {
@@ -328,55 +387,6 @@ class _SmallCardListState extends State<SmallCardList> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
 
-                    widget.method == 'top' 
-                    ? Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween, 
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        RawMaterialButton(
-                                    onPressed: () {
-                                      openModalReport(widget.document);
-                                    },
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(top: 8.0),
-                                      child: Icon(
-                                        Icons.error_outline,
-                                        color: kHighlightColor,
-                                        
-                                      ),
-                                      )
-                                  ),
-                          RawMaterialButton(
-                                    onPressed: () {
-                                      saveMeme(widget.document);
-                                      },
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(top: 8.0),
-                                        child:  bookmark
-                                      )
-                                    ),
-                            RawMaterialButton(
-                                    child: Row(
-                                      children: <Widget>[
-                                        Padding(
-                                          padding: const EdgeInsets.only(top: 8.0),
-                                          child: Icon(
-                                            Icons.share,
-                                            color: Color(0xFFF9C9BA),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    onPressed: () {
-                                      Share.share(widget.document['url'] +
-                                          ' ' +
-                                          "Send with Memender");
-                                    },
-                                  ),
-
-                      ],
-                    ) 
-                    : SizedBox(),
 
                     widget.method == 'uploaded'
                         ? Row(
@@ -394,6 +404,65 @@ class _SmallCardListState extends State<SmallCardList> {
                             ],
                           )
                         : SizedBox(),
+
+                 
+                     Padding(
+                       padding: const EdgeInsets.only(bottom: 8.0),
+                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround, 
+                       
+                        children: <Widget> [
+                          widget.method == "top" ?
+                          RawMaterialButton(
+                                      onPressed: () {
+                                        openModalReport(widget.document);
+                                      },
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(top: 8.0),
+                                        child: Icon(
+                                          Icons.error_outline,
+                                          color: kHighlightColor,
+                                          
+                                        ),
+                                        )
+                                    ) : SizedBox(height: 0.0,),
+                                                                    
+                        RawMaterialButton(
+                              child: Row(
+                                children: <Widget>[
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 8.0),
+                                    child: Icon(
+                                      Icons.share,
+                                      color: kHighlightColor,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              onPressed: () {
+                                Share.share(widget.document['url'] +
+                                    ' ' +
+                                    "Send with Memender");
+                              },
+                            ),
+                          widget.method == "top" ?
+
+                            RawMaterialButton(
+                                      onPressed: () {
+                                        saveMeme(widget.document);
+                                        },
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(top: 8.0),
+                                          child:  bookmark
+                                        )
+                                      ) : SizedBox(height: 0.0,),
+
+
+                        ],
+                    ),
+                     ) ,
+                    
+                        
                     Expanded(
                       // child: url == null
                       //     ? CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFCFB4F1)))
@@ -406,16 +475,20 @@ class _SmallCardListState extends State<SmallCardList> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(right: 38.0),
+                      padding: const EdgeInsets.only(right: 38.0, bottom: 8.0, top: 8.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: <Widget>[
+
+                          widget.document['usersHasSeen'].contains(userId) ?
                           Row(
                             children: <Widget>[
                               Padding(
                                 padding:
                                     const EdgeInsets.only(top: 8.0, right: 8.0),
-                                child: Icon(
+                                child:
+                               
+                                 Icon(
                                   Icons.thumb_down,
                                   color: kBlue,
                                 ),
@@ -428,22 +501,92 @@ class _SmallCardListState extends State<SmallCardList> {
                                         fontFamily: 'Lato')),
                               ),
                             ],
+                          ) :
+
+                        RawMaterialButton(
+                          padding: EdgeInsets.only(left: 20.0),
+                          constraints: BoxConstraints(
+                            maxWidth: 61.0
                           ),
+                          
+                          onPressed: () {
+                            downVote(widget.document);
+                            setState(() {
+                              unvoteBad = kBlue;
+                              unvoteBadText = kHighlightColor;
+
+                            });
+                          },
+                            child: Row(
+                              children: <Widget>[
+
+                                Padding(
+                                      padding:
+                                            const EdgeInsets.only(top: 8.0, right: 8.0),
+                                        child:
+                                       
+                                         Icon(
+                                          Icons.thumb_down,
+                                          color: unvoteBad,
+                                        ),
+                                      ),
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 0.0),
+                                  child: Text('${widget.document['downvote']}',
+                                      style: TextStyle(
+                                          color: unvoteBadText,
+                                          fontFamily: 'Lato')),
+                                ),
+                              ],
+                            ),
+                        ),
+                        
+                          widget.document['usersHasSeen'].contains(userId) ?
+
                           Row(
+                              children: <Widget>[
+                                Icon(
+                                  Icons.favorite,
+                                  color: kPink,
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 8.0),
+                                  child: Text('${widget.document['upvote']}',
+                                      style: TextStyle(
+                                          color: kHighlightColor,
+                                          fontFamily: 'Lato')),
+                                ),
+                              ],
+                            ) :
+                          RawMaterialButton(
+                            padding: EdgeInsets.only(left: 20.0),
+                        constraints: BoxConstraints(
+                            maxWidth: 61.0
+                          ),
+                            onPressed: () {
+                              upVote(widget.document);
+                              setState(() {
+                                unvoteGood = kPink;
+                                unvoteGoodText = kHighlightColor;
+                      
+                              });
+                            },
+                            child: Row(
                             children: <Widget>[
-                              Icon(
-                                Icons.favorite,
-                                color: kPink,
-                              ),
+                             Icon(
+                                   Icons.favorite,
+                                   color: unvoteGood,
+                                 ),
                               Padding(
                                 padding: const EdgeInsets.only(left: 8.0),
                                 child: Text('${widget.document['upvote']}',
                                     style: TextStyle(
-                                        color: kHighlightColor,
+                                        color: unvoteGoodText,
                                         fontFamily: 'Lato')),
                               ),
                             ],
                           ),
+                                         )
                         ],
                       ),
                     ),

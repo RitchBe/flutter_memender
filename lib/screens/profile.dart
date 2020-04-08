@@ -111,7 +111,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 gradient: LinearGradient(
                   begin: Alignment.bottomCenter,
                   end: Alignment.topCenter,
-                  colors: [Color(0xFFEFE4F7), Color(0x00FFFFFF)],
+                  colors: [Color(0xFFEEEEEE), Color(0x00FFFFFF)],
                 ),
               ),
               width: MediaQuery.of(context).size.width * 1,

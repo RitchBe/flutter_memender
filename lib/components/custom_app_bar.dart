@@ -31,8 +31,8 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
             onPressed: () {
               Scaffold.of(context).openDrawer();
             },
-            splashColor: kOpacityColor,
-            highlightColor: kOpacityColor,
+            splashColor: kHighlightColor,
+            highlightColor: kHighlightColor,
             tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
           ),
         );
@@ -43,9 +43,9 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
           return Container(
             padding: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.04),
             child: IconButton(
-              icon:  Icon(Icons.help_outline, color: kHighlightColor, size: 28.0),
-              splashColor: kOpacityColor,
-              highlightColor: kOpacityColor,
+              icon:  Icon(Icons.help_outline, color: kHighlightColor, size: 24.0),
+              splashColor: kHighlightColor,
+              highlightColor: kHighlightColor,
               onPressed: () {
                 Navigator.pushNamed(context, '/info');
             },

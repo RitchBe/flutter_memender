@@ -90,7 +90,7 @@ class _CardSwiperState extends State<CardSwiper> {
     Firestore.instance.collection('memes').snapshots().listen((data) => {
           data.documents.shuffle(),
           if (goodDocs.length < 5) {
-            for ( var i = 200; i >- 1; i--) {
+            for ( var i = 400; i >- 1; i--) {
               print('getting more'),
               data.documents[i]['usersHasSeen'].contains(userId) || data.documents[i]['reported'] == true || currentUserHasReportedUsers.contains(data.documents[i]['userId']) ? null : 
               setState(() {
@@ -629,7 +629,7 @@ return Stack(
               gradient: LinearGradient(
                 begin: Alignment.bottomCenter,
                 end: Alignment.topCenter,
-                colors: [Color(0xFFEFE4F7), Color(0x00FFFFFF)],
+                colors: [Color(0xFFEEEEEE), Color(0x00FFFFFF)],
               ),
             ),
             width: MediaQuery.of(context).size.width * 1,
